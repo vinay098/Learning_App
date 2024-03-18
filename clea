@@ -1,0 +1,162 @@
+[33mcommit cdedfbc6987e300fe59905db9d9a9f51d7e39434[m[33m ([m[1;36mHEAD[m[33m)[m
+Author: LearnGit <vinaysai445@gmail.com>
+Date:   Mon Mar 18 10:18:28 2024 +0530
+
+    first commit
+
+ Frontend | 2 [32m+[m[31m-[m
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+[33mcommit 64835735c7426c0c8b5debb1ba935798c461dc07[m[33m ([m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: LearnGit <vinaysai445@gmail.com>
+Date:   Mon Mar 18 09:53:42 2024 +0530
+
+    initial commit
+
+ API/API.csproj                                     |   23 [32m+[m
+ API/AutoMapper/MappingProfile.cs                   |   35 [32m+[m
+ API/Context/AppDbContext.cs                        |   20 [32m+[m
+ API/Context/ApplicationDbContext.cs                |   65 [32m+[m
+ API/Controllers/AccountController.cs               |  103 [32m+[m
+ API/Controllers/AdminController.cs                 |   58 [32m+[m
+ API/Controllers/BatchController.cs                 |  106 [32m+[m
+ API/Controllers/CourseController.cs                |   67 [32m+[m
+ API/Controllers/MapperController.cs                |  128 [32m+[m
+ API/Controllers/ModuleController.cs                |  107 [32m+[m
+ API/Controllers/SkillsController.cs                |  111 [32m+[m
+ API/Controllers/WeatherForecastController.cs       |   32 [32m+[m
+ API/DTOs/Batch_DTO/BatchDto.cs                     |   18 [32m+[m
+ API/DTOs/Course_DTO/CourseDisplayDto.cs            |   27 [32m+[m
+ API/DTOs/Course_DTO/CourseDto.cs                   |   16 [32m+[m
+ API/DTOs/Course_DTO/CourseSkillDto.cs              |   13 [32m+[m
+ API/DTOs/LoginDto.cs                               |   16 [32m+[m
+ API/DTOs/MapperDto/BatchModuleDisplayDto.cs        |   19 [32m+[m
+ API/DTOs/MapperDto/BatchModuleInsertDto.cs         |   13 [32m+[m
+ API/DTOs/MapperDto/SkillModuleDto.cs               |   13 [32m+[m
+ API/DTOs/MapperDto/SkillModuleValuesDto.cs         |   17 [32m+[m
+ API/DTOs/MemberDto.cs                              |   19 [32m+[m
+ API/DTOs/Module_DTO/ModuleDto.cs                   |   16 [32m+[m
+ API/DTOs/RegisterDto.cs                            |   32 [32m+[m
+ API/DTOs/Skills_DTO/SkillDto.cs                    |   14 [32m+[m
+ API/DTOs/UserDto.cs                                |   18 [32m+[m
+ .../20240315060736_addedcourseSkill.Designer.cs    |  448 [32m++[m
+ .../20240315060736_addedcourseSkill.cs             |  352 [32m++[m
+ .../ApplicationDbContextModelSnapshot.cs           |  445 [32m++[m
+ .../20240315060703_IdentityUserTable.Designer.cs   |  282 [32m++[m
+ .../20240315060703_IdentityUserTable.cs            |  237 [32m+[m
+ .../IdentityTable/AppDbContextModelSnapshot.cs     |  279 [32m++[m
+ API/Interface/IBatch.cs                            |   20 [32m+[m
+ API/Interface/ICourse.cs                           |   18 [32m+[m
+ API/Interface/IModule.cs                           |   19 [32m+[m
+ API/Interface/ISkills.cs                           |   19 [32m+[m
+ API/Models/Batch.cs                                |   23 [32m+[m
+ API/Models/BatchModule.cs                          |   18 [32m+[m
+ API/Models/Course.cs                               |   19 [32m+[m
+ API/Models/CourseSkills.cs                         |   15 [32m+[m
+ API/Models/LearnModule.cs                          |   20 [32m+[m
+ API/Models/SkillModule.cs                          |   17 [32m+[m
+ API/Models/Skills.cs                               |   24 [32m+[m
+ API/Models/User.cs                                 |   16 [32m+[m
+ API/Program.cs                                     |  119 [32m+[m
+ API/Properties/launchSettings.json                 |   41 [32m+[m
+ API/Repository/BatchRepository.cs                  |  175 [32m+[m
+ API/Repository/CourseService.cs                    |  133 [32m+[m
+ API/Repository/ModuleRepository.cs                 |  116 [32m+[m
+ API/Repository/SkillsRepository.cs                 |   67 [32m+[m
+ API/SD.cs                                          |   14 [32m+[m
+ API/Services/ContextSeedService.cs                 |  103 [32m+[m
+ API/Services/JWTService.cs                         |   51 [32m+[m
+ API/WeatherForecast.cs                             |   12 [32m+[m
+ API/appsettings.Development.json                   |   17 [32m+[m
+ API/appsettings.json                               |    9 [32m+[m
+ API/bin/Debug/net7.0/API.deps.json                 | 1530 [32m+++++++[m
+ API/bin/Debug/net7.0/API.dll                       |  Bin [31m0[m -> [32m212480[m bytes
+ API/bin/Debug/net7.0/API.exe                       |  Bin [31m0[m -> [32m157696[m bytes
+ API/bin/Debug/net7.0/API.pdb                       |  Bin [31m0[m -> [32m58828[m bytes
+ API/bin/Debug/net7.0/API.runtimeconfig.json        |   20 [32m+[m
+ ...er.Extensions.Microsoft.DependencyInjection.dll |  Bin [31m0[m -> [32m12800[m bytes
+ API/bin/Debug/net7.0/AutoMapper.dll                |  Bin [31m0[m -> [32m263680[m bytes
+ API/bin/Debug/net7.0/BouncyCastle.Crypto.dll       |  Bin [31m0[m -> [32m3318504[m bytes
+ API/bin/Debug/net7.0/Google.Protobuf.dll           |  Bin [31m0[m -> [32m409368[m bytes
+ API/bin/Debug/net7.0/Humanizer.dll                 |  Bin [31m0[m -> [32m355944[m bytes
+ .../Debug/net7.0/K4os.Compression.LZ4.Streams.dll  |  Bin [31m0[m -> [32m80384[m bytes
+ API/bin/Debug/net7.0/K4os.Compression.LZ4.dll      |  Bin [31m0[m -> [32m67072[m bytes
+ API/bin/Debug/net7.0/K4os.Hash.xxHash.dll          |  Bin [31m0[m -> [32m13312[m bytes
+ ...crosoft.AspNetCore.Authentication.JwtBearer.dll |  Bin [31m0[m -> [32m48304[m bytes
+ .../Microsoft.AspNetCore.Cryptography.Internal.dll |  Bin [31m0[m -> [32m51360[m bytes
+ ...osoft.AspNetCore.Cryptography.KeyDerivation.dll |  Bin [31m0[m -> [32m23200[m bytes
+ ...oft.AspNetCore.Identity.EntityFrameworkCore.dll |  Bin [31m0[m -> [32m104224[m bytes
+ .../Debug/net7.0/Microsoft.AspNetCore.OpenApi.dll  |  Bin [31m0[m -> [32m65712[m bytes
+ .../Microsoft.EntityFrameworkCore.Abstractions.dll |  Bin [31m0[m -> [32m34848[m bytes
+ .../Microsoft.EntityFrameworkCore.Design.dll       |  Bin [31m0[m -> [32m406560[m bytes
+ .../Microsoft.EntityFrameworkCore.Relational.dll   |  Bin [31m0[m -> [32m1844768[m bytes
+ .../Debug/net7.0/Microsoft.EntityFrameworkCore.dll |  Bin [31m0[m -> [32m2083888[m bytes
+ .../Microsoft.Extensions.DependencyModel.dll       |  Bin [31m0[m -> [32m79992[m bytes
+ .../net7.0/Microsoft.Extensions.Identity.Core.dll  |  Bin [31m0[m -> [32m175376[m bytes
+ .../Microsoft.Extensions.Identity.Stores.dll       |  Bin [31m0[m -> [32m45336[m bytes
+ .../Debug/net7.0/Microsoft.Extensions.Options.dll  |  Bin [31m0[m -> [32m60584[m bytes
+ .../Microsoft.IdentityModel.Abstractions.dll       |  Bin [31m0[m -> [32m20000[m bytes
+ .../Microsoft.IdentityModel.JsonWebTokens.dll      |  Bin [31m0[m -> [32m128432[m bytes
+ .../net7.0/Microsoft.IdentityModel.Logging.dll     |  Bin [31m0[m -> [32m36800[m bytes
+ ...osoft.IdentityModel.Protocols.OpenIdConnect.dll |  Bin [31m0[m -> [32m111008[m bytes
+ .../net7.0/Microsoft.IdentityModel.Protocols.dll   |  Bin [31m0[m -> [32m36216[m bytes
+ .../net7.0/Microsoft.IdentityModel.Tokens.dll      |  Bin [31m0[m -> [32m290736[m bytes
+ API/bin/Debug/net7.0/Microsoft.OpenApi.dll         |  Bin [31m0[m -> [32m211344[m bytes
+ .../Debug/net7.0/Microsoft.Win32.SystemEvents.dll  |  Bin [31m0[m -> [32m23112[m bytes
+ API/bin/Debug/net7.0/Mono.TextTemplating.dll       |  Bin [31m0[m -> [32m114688[m bytes
+ API/bin/Debug/net7.0/MySql.Data.dll                |  Bin [31m0[m -> [32m1181184[m bytes
+ API/bin/Debug/net7.0/MySql.EntityFrameworkCore.dll |  Bin [31m0[m -> [32m246784[m bytes
+ .../net7.0/Swashbuckle.AspNetCore.Swagger.dll      |  Bin [31m0[m -> [32m15360[m bytes
+ .../net7.0/Swashbuckle.AspNetCore.SwaggerGen.dll   |  Bin [31m0[m -> [32m97280[m bytes
+ .../net7.0/Swashbuckle.AspNetCore.SwaggerUI.dll    |  Bin [31m0[m -> [32m3253760[m bytes
+ API/bin/Debug/net7.0/System.CodeDom.dll            |  Bin [31m0[m -> [32m187224[m bytes
+ .../System.Configuration.ConfigurationManager.dll  |  Bin [31m0[m -> [32m380848[m bytes
+ API/bin/Debug/net7.0/System.Drawing.Common.dll     |  Bin [31m0[m -> [32m143408[m bytes
+ .../net7.0/System.IdentityModel.Tokens.Jwt.dll     |  Bin [31m0[m -> [32m84504[m bytes
+ .../System.Security.Cryptography.ProtectedData.dll |  Bin [31m0[m -> [32m24880[m bytes
+ .../Debug/net7.0/System.Security.Permissions.dll   |  Bin [31m0[m -> [32m92536[m bytes
+ API/bin/Debug/net7.0/System.Windows.Extensions.dll |  Bin [31m0[m -> [32m25976[m bytes
+ API/bin/Debug/net7.0/ZstdSharp.dll                 |  Bin [31m0[m -> [32m422400[m bytes
+ API/bin/Debug/net7.0/appsettings.Development.json  |   17 [32m+[m
+ API/bin/Debug/net7.0/appsettings.json              |    9 [32m+[m
+ .../lib/netcoreapp3.0/System.Drawing.Common.dll    |  Bin [31m0[m -> [32m372840[m bytes
+ .../net7.0/runtimes/win-x64/native/comerr64.dll    |  Bin [31m0[m -> [32m26184[m bytes
+ .../net7.0/runtimes/win-x64/native/gssapi64.dll    |  Bin [31m0[m -> [32m400456[m bytes
+ .../net7.0/runtimes/win-x64/native/k5sprt64.dll    |  Bin [31m0[m -> [32m74312[m bytes
+ .../net7.0/runtimes/win-x64/native/krb5_64.dll     |  Bin [31m0[m -> [32m1233480[m bytes
+ .../net7.0/runtimes/win-x64/native/krbcc64.dll     |  Bin [31m0[m -> [32m122440[m bytes
+ .../netcoreapp3.0/Microsoft.Win32.SystemEvents.dll |  Bin [31m0[m -> [32m50248[m bytes
+ .../lib/netcoreapp3.0/System.Drawing.Common.dll    |  Bin [31m0[m -> [32m414280[m bytes
+ .../netcoreapp3.0/System.Windows.Extensions.dll    |  Bin [31m0[m -> [32m56184[m bytes
+ .../System.Security.Cryptography.ProtectedData.dll |  Bin [31m0[m -> [32m31688[m bytes
+ API/obj/API.csproj.EntityFrameworkCore.targets     |   28 [32m+[m
+ API/obj/API.csproj.nuget.dgspec.json               |  133 [32m+[m
+ API/obj/API.csproj.nuget.g.props                   |   25 [32m+[m
+ API/obj/API.csproj.nuget.g.targets                 |    8 [32m+[m
+ .../.NETCoreApp,Version=v7.0.AssemblyAttributes.cs |    4 [32m+[m
+ API/obj/Debug/net7.0/API.AssemblyInfo.cs           |   22 [32m+[m
+ API/obj/Debug/net7.0/API.AssemblyInfoInputs.cache  |    1 [32m+[m
+ .../API.GeneratedMSBuildEditorConfig.editorconfig  |   19 [32m+[m
+ API/obj/Debug/net7.0/API.GlobalUsings.g.cs         |   17 [32m+[m
+ .../API.MvcApplicationPartsAssemblyInfo.cache      |    0
+ .../net7.0/API.MvcApplicationPartsAssemblyInfo.cs  |   17 [32m+[m
+ API/obj/Debug/net7.0/API.assets.cache              |  Bin [31m0[m -> [32m63247[m bytes
+ .../net7.0/API.csproj.AssemblyReference.cache      |  Bin [31m0[m -> [32m20090[m bytes
+ .../net7.0/API.csproj.CoreCompileInputs.cache      |    1 [32m+[m
+ .../Debug/net7.0/API.csproj.FileListAbsolute.txt   |   81 [32m+[m
+ API/obj/Debug/net7.0/API.csproj.Up2Date            |    0
+ API/obj/Debug/net7.0/API.dll                       |  Bin [31m0[m -> [32m212480[m bytes
+ API/obj/Debug/net7.0/API.genruntimeconfig.cache    |    1 [32m+[m
+ API/obj/Debug/net7.0/API.pdb                       |  Bin [31m0[m -> [32m58828[m bytes
+ API/obj/Debug/net7.0/apphost.exe                   |  Bin [31m0[m -> [32m157696[m bytes
+ API/obj/Debug/net7.0/ref/API.dll                   |  Bin [31m0[m -> [32m45056[m bytes
+ API/obj/Debug/net7.0/refint/API.dll                |  Bin [31m0[m -> [32m45056[m bytes
+ API/obj/Debug/net7.0/staticwebassets.build.json    |   11 [32m+[m
+ .../net7.0/staticwebassets/msbuild.build.API.props |    3 [32m+[m
+ .../msbuild.buildMultiTargeting.API.props          |    3 [32m+[m
+ .../msbuild.buildTransitive.API.props              |    3 [32m+[m
+ API/obj/project.assets.json                        | 4626 [32m++++++++++++++++++++[m
+ API/obj/project.nuget.cache                        |  111 [32m+[m
+ Frontend                                           |    1 [32m+[m
+ POC.sln                                            |   25 [32m+[m
+ 146 files changed, 10950 insertions(+)

@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <label class="navbar-brand" >Learning App</label>
+        <div class="collapse navbar-collapse d-flex " id="navbarSupportedContent">
+           
+              <ul *ngIf="(authServiec.user$ |async)==null" class="navbar-nav justify-content-lg-center mr-auto" >
+                
+              </ul>
+              <div *ngIf="(authServiec.user$ |async) as user" class="d-flex align-items-end ">
+                <ul class="navbar-nav mr-auto">
+                  <li class="nav-item active">
+                    <a class="nav-link text-white" href="#">
+                      <span class="text-white">{{user.userName | titlecase}}</span>
+                    </a>
+                  </li>
+                </ul>
+                <a href="" class="btn btn-danger" (click)="logout()">Logout</a>
+              </div>
+        </div>
+    </div>
+</nav>

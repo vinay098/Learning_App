@@ -1,0 +1,72 @@
+<form [formGroup]="moduleForm" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="form-group mt-3 col-md-3">
+            <label for="name" class="mb-2"> Module Name</label>
+            <input type="text" formControlName="name" class="form-control" id="name" placeholder="Enter Module Name">
+        </div>
+
+        <div class="form-group mt-3 col-md-3">
+            <label for="level" class="mb-2"> Module Level </label>
+            <input type="text" formControlName="level" class="form-control" id="level" placeholder="Enter Level">
+        </div>
+
+        <div class="form-group mt-3 col-md-3">
+            <label for="learn" class="mb-2"> Learning Type </label>
+            <input type="text" formControlName="learning_Type" class="form-control" id="learn" placeholder="Learning Type">
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group mt-3 col-md-3">
+            <label for="certification" class="mb-2">Certification Type</label>
+            <input type="text" formControlName="certification_Type" class="form-control" id="certification" placeholder="Enter Certification Type">
+        </div>
+    </div>
+
+    @if(isEdit)
+    {
+        <div class="row d-flex">
+            <div class="form-group mt-3 col-md-3 align-items-end">
+                <button type="submit"  class="btn btn-primary mt-3">Update</button>
+            </div>
+        </div>
+    }
+    @else {
+        <div class="row  d-flex">
+            <div class="form-group mt-3 col-md-3 align-items-end">
+                <button type="submit"  class="btn btn-primary mt-3">Submit</button>
+            </div>
+        </div>
+    }
+   
+</form>
+
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-5 my-5">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col" class="text-center">Id</th>
+                <th scope="col" class="text-center">Module Name</th>
+                <th scope="col" class="text-center">Level</th>
+                <th scope="col" class="text-center">Certification</th>
+                <th scope="col" class="text-center">Learning Type</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let val of module">
+                <td class="text-center">{{val.id}}</td>
+                <td class="text-center">{{val.name}}</td>
+                <td class="text-center">{{val.level}}</td>
+                <td class="text-center">{{val.certification_Type }}</td>
+                <td class="text-center">{{val.learning_Type}}</td>
+
+                <td class="text-center">
+                    <button type="button" (click)="edit(val.id)" class="btn btn-primary mx-2">Edit</button>
+                    <button type="button" (click)="deleteModule(val.id)" class="btn btn-danger">Delete</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

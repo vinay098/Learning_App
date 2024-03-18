@@ -1,0 +1,55 @@
+<section class="vh-75 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+            <div class="col-8 col-lg-5 col-xl-5">
+                <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+                    <div class="card-body p-4 p-md-5">
+                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5 text-center">Login</h3>
+                        <form [formGroup]="loginform" (ngSubmit)="login()">
+                            <div class="row">
+                                <div class="col-md-11  mb-4">
+                                    <div class="form-outline">
+                                        <input formControlName="userName" type="text" id="userName"
+                                            placeholder="Enter User Name" class="form-control shadow-none" required
+                                            [class.is-invalid]="submitted && loginform.get('userName')?.errors" />
+                                        &nbsp;<span *ngIf="submitted && loginform.get('userName')?.hasError('required')"
+                                            class="text-danger">User Name is Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-11 mb-2">
+                                    <div class="form-outline overflow-auto">
+                                        <div class="input-field form-outline">
+                                            <input formControlName="password" type="password" id="password"
+                                                [type]="type" placeholder="Enter Your Password" required
+                                                [class.is-invalid]="submitted && loginform.get('password')?.errors" />
+                                            <span (click)="hideshowpass()">show</span>
+                                        </div>
+
+                                        &nbsp;<span *ngIf="submitted && loginform.get('password')?.hasError('required')"
+                                            class="text-danger">Password Is Required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" mt-1 pt-2 mb-3 ">
+                                <button type="submit" class="btn btn-primary btn-lg col-md-11">Login</button>
+                            </div>
+                        </form>
+                        <div *ngIf="errorMessages.length > 0" class="form-floating">
+                            <app-validation-message [errorMessages]="errorMessages"></app-validation-message>
+                          </div>
+                        <div class="row mt-4 ">
+                            <div class="col-md-7 pt-2">
+                                <label>Don't have an account</label>
+                            </div>
+                            <div class="col-md-5 text-center">
+                                <a href="#" routerLink="/signup" style=" font-size: 1.2rem; text-decoration: none;" class="">Sign Up</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
