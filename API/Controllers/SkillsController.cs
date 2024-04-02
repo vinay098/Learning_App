@@ -28,7 +28,7 @@ namespace API.Controllers
         {
             try
             {
-                var skills = await _skillRepo.GetAsync();
+                var skills = await _skillRepo.GetAllSkillsAsync();
                 return Ok(skills);
             }
             catch (Exception e)
@@ -97,7 +97,11 @@ namespace API.Controllers
         {
             try
             {
-                var skill = await _skillRepo.GetSkillsById(id);
+                var skill = await _skillRepo.GetSkillDtoById(id);
+                if(skill == null)
+                {
+                    return NotFound("id not found");
+                }
                 return Ok(skill);
             }
             catch(Exception e)

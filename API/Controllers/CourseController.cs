@@ -1,11 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using System.Security.Claims;
 using API.DTOs;
 using API.DTOs.Course_DTO;
 using API.Interface;
-using API.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -15,10 +12,26 @@ namespace API.Controllers
     public class CourseController : ControllerBase
     {
         private readonly ICourse _courseRepo;
-
-        public CourseController(ICourse courseRepo)
+        private readonly IHttpContextAccessor _accessor;
+        public CourseController(ICourse courseRepo,IHttpContextAccessor accessor)
         {
+            _accessor = accessor;
             _courseRepo = courseRepo;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult> GetCourseByFaculty()
+        {
+            string user_id= _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var res = await _courseRepo.GetCourseByFacultyId(user_id);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
         }
 
         [HttpPost("add-course")]
@@ -27,6 +40,22 @@ namespace API.Controllers
             try
             {
                 var res = await _courseRepo.AddCourseAsync(obj);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        
+        [HttpPost("add-course-with-image")]
+        public async Task<ActionResult> AddCoursewithImage([FromForm]CourseCreateDto obj)
+        {
+            string user_id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var res = await _courseRepo.AddCoursewithImage(user_id,obj);
                 return Ok(res);
             }
             catch (Exception e)
@@ -63,5 +92,56 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("get-by-id/{id}")]
+        public async Task<ActionResult> GetById(int id)
+        {
+            try
+            {
+                var res = await _courseRepo.GetCourseDisplayDtoById(id);
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPut("update-course")]
+        public async Task<ActionResult> UpdateCourse(int id,CourseDisplayDto obj)
+        {
+            try
+            {
+               await _courseRepo.UpdateCourse(id,obj);
+               return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpDelete("delete-course/{id}")]
+        public async Task<ActionResult> DeleteCourse(int id)
+        {
+            try
+            {
+                var course = await _courseRepo.GetById(id);
+                if(course == null)
+                {
+                    return NotFound(new
+                    {
+                        status=404,
+                        message = "batch not found"
+                    });
+                }
+                await _courseRepo.DeleteCource(course);
+                return Ok(course);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+            
+        }
     }
 }

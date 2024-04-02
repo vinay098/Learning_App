@@ -7,11 +7,11 @@ namespace API.DTOs.MapperDto
 {
     public class SkillModuleValuesDto
     {
-        public string SkillName {get; set;}
-        public string SkillFamily {get;set;}
+        public int ModuleId {get;set;}
         public string ModuleName {get; set;}
         public string Level {get;set;}
         public string Learning_Type {get; set;}
         public string Certification_Type {get; set;}
+        public List<string> SkillName {get; set;} = new List<string>();
     }
 }

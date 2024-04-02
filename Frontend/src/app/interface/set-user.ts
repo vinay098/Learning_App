@@ -1,4 +1,5 @@
 export interface SetUser {
+    id:string;
     userName: string;
     firstName: string;
     lastName: string;

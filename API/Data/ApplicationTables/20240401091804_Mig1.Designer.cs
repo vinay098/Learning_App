@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.ApplicationTables
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240315060736_addedcourseSkill")]
-    partial class addedcourseSkill
+    [Migration("20240401091804_Mig1")]
+    partial class Mig1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,9 +36,6 @@ namespace API.Data.ApplicationTables
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
-
-                    b.Property<int>("SkillId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
@@ -78,26 +75,24 @@ namespace API.Data.ApplicationTables
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("BatchId")
+                    b.Property<int>("BatchId")
                         .HasColumnType("int");
-
-                    b.Property<string>("Batch_Id")
-                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<int>("ModuleId")
-                        .HasColumnType("int");
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Name")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UserId")
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BatchId");
-
-                    b.HasIndex("ModuleId");
 
                     b.ToTable("Courses");
                 });
@@ -201,6 +196,9 @@ namespace API.Data.ApplicationTables
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("CourseId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime(6)");
 
@@ -265,6 +263,8 @@ namespace API.Data.ApplicationTables
 
                     b.HasIndex("BatchId");
 
+                    b.HasIndex("CourseId");
+
                     b.HasIndex("LearnModuleId");
 
                     b.HasIndex("SkillsId");
@@ -274,21 +274,6 @@ namespace API.Data.ApplicationTables
                     b.HasIndex("SkillModuleSkillId", "SkillModuleModuleId");
 
                     b.ToTable("User");
-                });
-
-            modelBuilder.Entity("BatchSkills", b =>
-                {
-                    b.Property<int>("BatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SkillsId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BatchId", "SkillsId");
-
-                    b.HasIndex("SkillsId");
-
-                    b.ToTable("BatchSkills");
                 });
 
             modelBuilder.Entity("API.Models.BatchModule", b =>
@@ -314,17 +299,11 @@ namespace API.Data.ApplicationTables
                 {
                     b.HasOne("API.Models.Batch", "Batch")
                         .WithMany()
-                        .HasForeignKey("BatchId");
-
-                    b.HasOne("API.Models.LearnModule", "Module")
-                        .WithMany()
-                        .HasForeignKey("ModuleId")
+                        .HasForeignKey("BatchId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Batch");
-
-                    b.Navigation("Module");
                 });
 
             modelBuilder.Entity("API.Models.CourseSkills", b =>
@@ -371,6 +350,10 @@ namespace API.Data.ApplicationTables
                         .WithMany("Users")
                         .HasForeignKey("BatchId");
 
+                    b.HasOne("API.Models.Course", null)
+                        .WithMany("Users")
+                        .HasForeignKey("CourseId");
+
                     b.HasOne("API.Models.LearnModule", null)
                         .WithMany("Users")
                         .HasForeignKey("LearnModuleId");
@@ -388,21 +371,6 @@ namespace API.Data.ApplicationTables
                         .HasForeignKey("SkillModuleSkillId", "SkillModuleModuleId");
                 });
 
-            modelBuilder.Entity("BatchSkills", b =>
-                {
-                    b.HasOne("API.Models.Batch", null)
-                        .WithMany()
-                        .HasForeignKey("BatchId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("API.Models.Skills", null)
-                        .WithMany()
-                        .HasForeignKey("SkillsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("API.Models.Batch", b =>
                 {
                     b.Navigation("BatchModules");
@@ -418,6 +386,8 @@ namespace API.Data.ApplicationTables
             modelBuilder.Entity("API.Models.Course", b =>
                 {
                     b.Navigation("CourseSkills");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.LearnModule", b =>

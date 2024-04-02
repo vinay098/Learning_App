@@ -1,3 +1,5 @@
+
+<h2 class="container text-center">Module Page</h2>
 <form [formGroup]="moduleForm" (ngSubmit)="submit()">
     <div class="row">
         <div class="form-group mt-3 col-md-3">
@@ -12,40 +14,46 @@
 
         <div class="form-group mt-3 col-md-3">
             <label for="learn" class="mb-2"> Learning Type </label>
-            <input type="text" formControlName="learning_Type" class="form-control" id="learn" placeholder="Learning Type">
+            <input type="text" formControlName="learning_Type" class="form-control" id="learn"
+                placeholder="Learning Type">
         </div>
     </div>
 
     <div class="row">
         <div class="form-group mt-3 col-md-3">
             <label for="certification" class="mb-2">Certification Type</label>
-            <input type="text" formControlName="certification_Type" class="form-control" id="certification" placeholder="Enter Certification Type">
+            <input type="text" formControlName="certification_Type" class="form-control" id="certification"
+                placeholder="Enter Certification Type">
         </div>
     </div>
 
     @if(isEdit)
     {
-        <div class="row d-flex">
-            <div class="form-group mt-3 col-md-3 align-items-end">
-                <button type="submit"  class="btn btn-primary mt-3">Update</button>
-            </div>
-        </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Update</button>
+
     }
     @else {
-        <div class="row  d-flex">
-            <div class="form-group mt-3 col-md-3 align-items-end">
-                <button type="submit"  class="btn btn-primary mt-3">Submit</button>
-            </div>
-        </div>
+
+    <button type="submit" class="btn btn-primary mt-3">Submit</button>
+
     }
-   
+    <button type="button" (click)="resetPage()" class="btn btn-primary mt-3 mx-2 ">Reset Page</button>
 </form>
 
-<div class="table-wrapper-scroll-y my-custom-scrollbar mt-5 my-5">
+<div class="container mt-2 mx-0">
+    <nav class="navbar">
+        <input type="text" name="name" [(ngModel)]="name" (ngModelChange)="search()" placeholder="Enter text to search"
+            class="form-control" />
+    </nav>
+</div>
+
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-3 my-5">
     <table class="table table-bordered table-striped mb-0">
         <thead>
             <tr class="table-primary">
-                <th scope="col" class="text-center">Id</th>
+                <th scope="col" (click)="toggleSortById()" class="text-center">Id&nbsp;<i class="fa-solid fa-sort"></i>
+                </th>
                 <th scope="col" class="text-center">Module Name</th>
                 <th scope="col" class="text-center">Level</th>
                 <th scope="col" class="text-center">Certification</th>
@@ -54,13 +62,12 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let val of module">
+            <tr *ngFor="let val of module |paginate:{itemsPerPage: 3, currentPage: p }">
                 <td class="text-center">{{val.id}}</td>
                 <td class="text-center">{{val.name}}</td>
                 <td class="text-center">{{val.level}}</td>
                 <td class="text-center">{{val.certification_Type }}</td>
                 <td class="text-center">{{val.learning_Type}}</td>
-
                 <td class="text-center">
                     <button type="button" (click)="edit(val.id)" class="btn btn-primary mx-2">Edit</button>
                     <button type="button" (click)="deleteModule(val.id)" class="btn btn-danger">Delete</button>
@@ -70,3 +77,4 @@
         </tbody>
     </table>
 </div>
+<pagination-controls (pageChange)="p = $event"></pagination-controls>

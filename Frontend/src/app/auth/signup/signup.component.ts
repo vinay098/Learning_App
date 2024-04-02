@@ -38,25 +38,6 @@ export class SignupComponent implements OnInit {
     })
   }
 
-  // number = this.registerForm.get('contactNumber').value;
-  numberMask(_number:string)
-  {
-    var mask="";
-    if(_number)
-    {
-      for(let i=0;i<_number.length-4;i++)
-      {
-        mask +="x";
-      }
-      console.log(mask);
-      return mask + _number.slice(6,10);
-    }
-    else{
-      return null;
-    }
-  }
-
-
 
   register() {
     this.submitted = true;

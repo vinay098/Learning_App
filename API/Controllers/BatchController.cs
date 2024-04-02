@@ -1,8 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Security.Claims;
-using System.Threading.Tasks;
 using API.DTOs.Batch_DTO;
 using API.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -37,12 +34,12 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("batches")]
-        public async Task<ActionResult> GetBatchs()
+         [HttpGet("batches")]
+        public async Task<ActionResult> GetBatches()
         {
             try
             {
-                var res = await _batchrepo.GetAll();
+                var res = await _batchrepo.GetAllAsync();
                 return Ok(res);
             }
             catch (Exception e)

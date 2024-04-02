@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj": {}
+    "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj": {
+    "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj",
+        "projectPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj",
         "packagesPath": "C:\\Users\\E.Vinay\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\obj\\",
+        "outputPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\E.Vinay\\AppData\\Roaming\\NuGet\\NuGet.Config"

@@ -7,7 +7,7 @@ using MySql.EntityFrameworkCore.Metadata;
 namespace API.Data.ApplicationTables
 {
     /// <inheritdoc />
-    public partial class addedcourseSkill : Migration
+    public partial class Mig1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,7 +26,6 @@ namespace API.Data.ApplicationTables
                     EndDate = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     Capacity = table.Column<int>(type: "int", nullable: false),
                     Technology = table.Column<string>(type: "longtext", nullable: true),
-                    SkillId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<string>(type: "longtext", nullable: true)
                 },
                 constraints: table =>
@@ -70,6 +69,30 @@ namespace API.Data.ApplicationTables
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Courses",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(type: "longtext", nullable: true),
+                    Description = table.Column<string>(type: "longtext", nullable: true),
+                    ImageUrl = table.Column<string>(type: "longtext", nullable: true),
+                    BatchId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<string>(type: "longtext", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Courses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Courses_Batches_BatchId",
+                        column: x => x.BatchId,
+                        principalTable: "Batches",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "BatchModules",
                 columns: table => new
                 {
@@ -90,60 +113,6 @@ namespace API.Data.ApplicationTables
                         name: "FK_BatchModules_Modules_ModuleId",
                         column: x => x.ModuleId,
                         principalTable: "Modules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Courses",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    Name = table.Column<string>(type: "longtext", nullable: true),
-                    Description = table.Column<string>(type: "longtext", nullable: true),
-                    Batch_Id = table.Column<string>(type: "longtext", nullable: true),
-                    BatchId = table.Column<int>(type: "int", nullable: true),
-                    ModuleId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Courses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Courses_Batches_BatchId",
-                        column: x => x.BatchId,
-                        principalTable: "Batches",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Courses_Modules_ModuleId",
-                        column: x => x.ModuleId,
-                        principalTable: "Modules",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("MySQL:Charset", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "BatchSkills",
-                columns: table => new
-                {
-                    BatchId = table.Column<int>(type: "int", nullable: false),
-                    SkillsId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_BatchSkills", x => new { x.BatchId, x.SkillsId });
-                    table.ForeignKey(
-                        name: "FK_BatchSkills_Batches_BatchId",
-                        column: x => x.BatchId,
-                        principalTable: "Batches",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_BatchSkills_Skills_SkillsId",
-                        column: x => x.SkillsId,
-                        principalTable: "Skills",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -212,6 +181,7 @@ namespace API.Data.ApplicationTables
                     BatchId = table.Column<int>(type: "int", nullable: true),
                     BatchModuleBatchId = table.Column<int>(type: "int", nullable: true),
                     BatchModuleModuleId = table.Column<int>(type: "int", nullable: true),
+                    CourseId = table.Column<int>(type: "int", nullable: true),
                     LearnModuleId = table.Column<int>(type: "int", nullable: true),
                     SkillModuleModuleId = table.Column<int>(type: "int", nullable: true),
                     SkillModuleSkillId = table.Column<int>(type: "int", nullable: true),
@@ -245,6 +215,11 @@ namespace API.Data.ApplicationTables
                         principalTable: "Batches",
                         principalColumn: "Id");
                     table.ForeignKey(
+                        name: "FK_User_Courses_CourseId",
+                        column: x => x.CourseId,
+                        principalTable: "Courses",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_User_Modules_LearnModuleId",
                         column: x => x.LearnModuleId,
                         principalTable: "Modules",
@@ -268,19 +243,9 @@ namespace API.Data.ApplicationTables
                 column: "ModuleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_BatchSkills_SkillsId",
-                table: "BatchSkills",
-                column: "SkillsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Courses_BatchId",
                 table: "Courses",
                 column: "BatchId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Courses_ModuleId",
-                table: "Courses",
-                column: "ModuleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_CourseSkills_SkillId",
@@ -303,6 +268,11 @@ namespace API.Data.ApplicationTables
                 columns: new[] { "BatchModuleBatchId", "BatchModuleModuleId" });
 
             migrationBuilder.CreateIndex(
+                name: "IX_User_CourseId",
+                table: "User",
+                column: "CourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_User_LearnModuleId",
                 table: "User",
                 column: "LearnModuleId");
@@ -322,19 +292,16 @@ namespace API.Data.ApplicationTables
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BatchSkills");
-
-            migrationBuilder.DropTable(
                 name: "CourseSkills");
 
             migrationBuilder.DropTable(
                 name: "User");
 
             migrationBuilder.DropTable(
-                name: "Courses");
+                name: "BatchModules");
 
             migrationBuilder.DropTable(
-                name: "BatchModules");
+                name: "Courses");
 
             migrationBuilder.DropTable(
                 name: "SkillModules");

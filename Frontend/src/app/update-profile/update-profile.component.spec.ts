@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SkillModuleMapComponent } from './skill-module-map.component';
+import { UpdateProfileComponent } from './update-profile.component';
 
-describe('SkillModuleMapComponent', () => {
-  let component: SkillModuleMapComponent;
-  let fixture: ComponentFixture<SkillModuleMapComponent>;
+describe('UpdateProfileComponent', () => {
+  let component: UpdateProfileComponent;
+  let fixture: ComponentFixture<UpdateProfileComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [SkillModuleMapComponent]
+      declarations: [UpdateProfileComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(SkillModuleMapComponent);
+    fixture = TestBed.createComponent(UpdateProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

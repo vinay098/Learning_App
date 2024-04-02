@@ -7,6 +7,7 @@ import { BehaviorSubject, ReplaySubject, map, of } from 'rxjs';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -23,11 +24,14 @@ export class AuthServiceService {
   role: string;
 
   constructor(private http: HttpClient,
-    private router: Router, @Inject(PLATFORM_ID) private platform_id: object) {
-      // this.uesrPayload = this.decodedToken();
+    private router: Router, @Inject(PLATFORM_ID) private platform_id: object,
+    private toastr: ToastrService) {
+    // this.uesrPayload = this.decodedToken();
     if (isPlatformBrowser(this.platform_id)) {
       this.uesrPayload = this.decodedToken();
+      console.log(this.isTokenExpired());
     }
+    
 
   }
 
@@ -56,7 +60,7 @@ export class AuthServiceService {
       map((user: SetUser) => {
         if (user) {
           this.setUser(user);
-          // console.log(user.jwt);
+          console.log(user);
         }
       })
     );
@@ -66,6 +70,17 @@ export class AuthServiceService {
     localStorage.removeItem("appuser");
     this.userSource.next(null);
     this.router.navigateByUrl('/');
+  }
+
+
+  isTokenExpired(): boolean {
+    const decoded = this.decodedToken();
+    if (!decoded) {
+      return true; 
+    }
+    // console.log(decoded.exp * 1000);
+    // console.log(Date.now());
+    return decoded.exp * 1000 < Date.now();
   }
 
   getJwt() {
@@ -83,11 +98,6 @@ export class AuthServiceService {
 
     this.userSource.next(user);
     // console.log(user);
-
-  }
-
-  isLoggedin(): boolean {
-    return !!localStorage.getItem("appuser")
   }
 
   autoLogin() {
@@ -95,10 +105,8 @@ export class AuthServiceService {
     if (!user) {
       return;
     }
-    this.User = user;
-    const loggedUser = this.User;
-    console.log(loggedUser);
-
+    const loggedUser = user;
+    // console.log(loggedUser);
 
     if (loggedUser.jwt) {
       this.userSource.next(loggedUser);
@@ -109,16 +117,30 @@ export class AuthServiceService {
     const jwtHelper = new JwtHelperService();
     const token = this.getJwt();
     console.log(jwtHelper.decodeToken(token));
+   
+    
+    
     return jwtHelper.decodeToken(token);
   }
 
-  getUserNameFromToken() {
-       return this.uesrPayload.unique_name;
+  updateProfile(update:any)
+  {
+    return this.http.put<SetUser>(this.AuthUrl+"update-profile",update).pipe(
+      map((user:SetUser)=>{
+        this.setUser(user);
+        console.log(user);
+      })
+    );
+    
   }
 
-  getRoleFromToken() {
-    // if(this.uesrPayload)
-     return this.uesrPayload.role;    
+  
+  getRoleFromToken(){
+    if(this.uesrPayload){
+      return this.uesrPayload.role;
+    }
+
   }
+
 
 }

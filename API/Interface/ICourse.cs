@@ -14,5 +14,11 @@ namespace API.Interface
         Task AddCourseSkillAsync(CourseSkillDto course);
         Task<IList<CourseDisplayDto>> GetAllAsync();
         Task<IList<string>> GetAllSkillName(int course_id);
+        Task<Course> GetById(int id);
+        Task DeleteCource(Course obj);
+        Task UpdateCourse(int id,CourseDisplayDto obj);
+        Task<CourseDisplayDto> GetCourseDisplayDtoById(int id);
+        Task<Course>AddCoursewithImage(string User_Id,CourseCreateDto model);
+        Task<List<FacultyCourseDto>> GetCourseByFacultyId(string user_id);
     }
 }

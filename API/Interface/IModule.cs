@@ -15,5 +15,6 @@ namespace API.Interface
         Task<LearnModule> GetModuleByIdAsync(int id);
         Task DeleteModuleAsync(LearnModule obj);
         Task UpdateModuleAsync(int id,string user_id,ModuleDto obj);
+         Task<IList<string>> GetModuleName(int module_id);
     }
 }

@@ -9,11 +9,11 @@ namespace API.Interface
 {
     public interface ISkills
     {
-        Task<List<Skills>> GetAsync();
         Task DeleteSkillsAsync(Skills skill);
         Task<Skills> GetSkillsById(int id);
         Task<Skills> AddSkillsAsync(string id,SkillDto skill);
         Task UpdateSkillsAsync(int id,SkillDto skill);
-        
+        Task<List<SkillDto>> GetAllSkillsAsync();
+        Task<SkillDto> GetSkillDtoById(int id);
     }
 }

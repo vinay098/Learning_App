@@ -1,4 +1,9 @@
-<div class="table-wrapper-scroll-y my-custom-scrollbar mt-5 my-5">
+
+<h2 class="container text-center">Approve Users</h2>
+<button (click)="getFaculty()" class="btn btn-primary  mt-2">Get Faculty</button>
+<button (click)="getEmployee()" class="btn btn-primary mx-2 mt-2">Get Employee</button>
+<button (click)="getMembers()" class="btn btn-primary mx-2 mt-2">Get All</button>
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-2">
     <table class="table table-bordered table-striped mb-0">
         <thead>
             <tr class="table-primary">
@@ -10,7 +15,9 @@
                 <th scope="col" class="text-center">Date Of Birth</th>
                 <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Role</th>
-                <th scope="col" class="text-center">Action</th>
+                <th scope="col" class="text-center">Is Approved</th>
+                <th scope="col" class="text-center">Approve</th>
+                <th scope="col" class="text-center">Disapprove</th>
             </tr>
         </thead>
         <tbody>
@@ -23,9 +30,13 @@
                 <td class="text-center">{{val.dob|date}}</td>
                 <td class="text-center">{{val.email}}</td>
                 <td class="text-center">{{val.roles}}</td>
+                <td class="text-center">{{val.isApproved}}</td>
                 <td class="text-center">
-                    <button type="button" class="btn btn-primary mx-2">Edit</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
+                    <button type="button" (click)="approve(val.userId)" class="btn btn-primary mx-2">Approve</button>
+                    
+                </td>
+                <td class="text-center">
+                    <button type="button" (click)="disapprove(val.userId)" class="btn btn-danger mt-1 ">Disapprove</button>
                 </td>
             </tr>
         </tbody>

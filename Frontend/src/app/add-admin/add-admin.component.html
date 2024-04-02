@@ -1,0 +1,125 @@
+<section class="vh-75 gradient-custom">
+    <div class="container h-100">
+      <div class="row justify-content-center align-items-center h-100 w-100 mt-0">
+        <div class="col-12 col-lg-9 col-xl-7">
+          <div style="border-radius: 15px;" class="card shadow-2-strong card-registration">
+            <div class="card-body p-md-5">
+              <h3 class="mb-4 pb-2 pb-md-0 text-center">Add Admin</h3>
+              <form [formGroup]="registerForm" (ngSubmit)="register()">
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-outline">
+                      <input formControlName="firstName" placeholder="Enter First Name" type="text" id="firstName"
+                        class="form-control form-control-lg" required
+                        [class.is-invalid]="submitted && registerForm.get('firstName')?.errors" />
+                      &nbsp;<span *ngIf="submitted && registerForm.get('firstName')?.hasError('required')"
+                        class="text-danger">First Name is Required</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 mb-2">
+                    <div class="form-outline">
+                      <input formControlName="lastName" placeholder="Enter Last Name" type="text" id="lastName"
+                        class="form-control form-control-lg" required
+                        [class.is-invalid]="submitted && registerForm.get('lastName')?.errors" />
+                      &nbsp;<span *ngIf="submitted && registerForm.get('lastName')?.hasError('required')"
+                        class="text-danger">Last Name is Required</span>
+                    </div>
+                  </div>
+                </div>
+  
+                <div class="row">
+                  <div class="col-md-6 mb-4 d-flex align-items-center">
+  
+                    <div class="form-outline datepicker w-100">
+                      <input formControlName="dob" placeholder="Enter Date Of Birth" type="date"
+                        class="form-control form-control-lg" id="dob" />
+                    </div>
+  
+                  </div>
+                  <div class="col-md-6 mb-4 mt-3">
+  
+                    <h6 class="mb-2 pb-1">Gender: </h6>
+  
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender" class="form-check-input" type="radio" id="femaleGender"
+                        value="female" checked />
+                      <label class="form-check-label" for="femaleGender">Female</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender" class="form-check-input" type="radio" id="maleGender"
+                        value="male" />
+                      <label class="form-check-label" for="maleGender">Male</label>
+                    </div>
+  
+                    <div class="form-check form-check-inline">
+                      <input formControlName="gender" class="form-check-input" type="radio" id="otherGender"
+                        value="other" />
+                      <label class="form-check-label" for="otherGender">Other</label>
+                    </div>
+  
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6  pb-2">
+                    <div class="form-outline">
+                      <input formControlName="email" placeholder="Enter Your Email" type="email" id="emailAddress"
+                        class="form-control form-control-lg"
+                        [class.is-invalid]="submitted && registerForm.get('email')?.errors" required />
+                      &nbsp;<span *ngIf="submitted && registerForm.get('email')?.hasError('required')"
+                        class="text-danger">Email is Required</span>
+                    </div>
+                  </div>
+                  <div class="col-md-6 pb-2">
+                    <div class="form-outline">
+                      <input  formControlName="phoneNumber" placeholder="Enter Mobile Number" type="text" id="phoneNumber"
+                        maxlength="10" [hiddenInput]="true" mask="XXXXXX0000" class="form-control form-control-lg"
+                        [class.is-invalid]="submitted && registerForm.get('phoneNumber')?.errors" required />
+                      &nbsp;<span *ngIf="submitted && registerForm.get('phoneNumber')?.hasError('required')"
+                        class="text-danger">Phone Number is Required</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-outline">
+                      <input formControlName="userName" placeholder="Enter Your User Name" type="text" id="userName"
+                        class="form-control form-control-lg" required
+                        [class.is-invalid]="submitted && registerForm.get('userName')?.errors" [required]="true" />
+                      &nbsp;<span *ngIf="submitted && registerForm.get('userName')?.hasError('required')"
+                        class="text-danger">User Name is Required</span> 
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-outline ">
+                      <div class="input-group">
+                        <input formControlName="password" [type]="type" placeholder="Enter Password" id="password"
+                          class="form-control form-control-lg" required
+                          [class.is-invalid]="submitted && registerForm.get('password')?.errors" required />
+                        <span (click)="hideshowpass()" style="cursor: pointer;" class="p-2 btn btn-primary ">show</span>
+                        &nbsp;
+                      </div>
+                      <span *ngIf="submitted && registerForm.get('password')?.hasError('required')"
+                          class="text-danger">Password is Required</span>
+  
+                    </div>
+                  </div>
+                </div>
+  
+                <div *ngIf="errorMessages.length > 0" class="form-floating">
+                  <app-error-message [errorMessages]="errorMessages"></app-error-message>
+                </div>
+  
+                <div class="mt-4">
+                  <button type="submit" class="btn btn-primary btn-lg form-control">Submit</button>
+                </div>
+              </form>
+              <div>
+                <!-- {{maskNumber(number)}} -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>

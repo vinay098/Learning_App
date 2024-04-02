@@ -13,23 +13,34 @@ export class MapperService {
   private mapperUrl = "http://localhost:5100/api/Mapper/";
   constructor(private http:HttpClient) { }
 
-  addSkillModuleValue(mapType:SkillModule)
-  {
-    return this.http.post(this.mapperUrl+"skill-module-map",mapType);
-  }
 
   getSkillModuleDtovalue()
   {
-    return this.http.get<SkillModuleDto[]>(this.mapperUrl+"get-skill-module");
+    return this.http.get<SkillModuleDto[]>(this.mapperUrl+"skill-module-mapped");
   }
 
-  addBatchModulevalue(mapType:BatchModule)
+  addSkillModule(mapType:any)
   {
-    return this.http.post(this.mapperUrl+"batch-module-map",mapType);
+    return this.http.post(this.mapperUrl+"add-map",mapType);
   }
 
-  getBatchModuleDtoValue()
+  getBatchModuleMappedValues()
   {
-    return this.http.get<BatchModuleDisplayDto[]>(this.mapperUrl+"get-batch-module");
+    return this.http.get<BatchModuleDisplayDto[]>(this.mapperUrl+"batch-module-mapped-values");
+  }
+
+  deleteBatchModule(id:number)
+  {
+    return this.http.delete(this.mapperUrl+"delete-batch-module/"+id);
+  }
+
+  addSkillMod(value:any)
+  {
+    return this.http.post(this.mapperUrl+"add-skill-module",value);
+  }
+
+  deleteSkillModule(id:number)
+  {
+    return this.http.delete(this.mapperUrl+"delete-skill-module-map/"+id);
   }
 }

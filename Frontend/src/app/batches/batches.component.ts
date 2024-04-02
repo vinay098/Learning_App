@@ -18,11 +18,13 @@ export class BatchesComponent implements OnInit {
 
   batchForm: FormGroup = new FormGroup({});
   batches!: Batch[];
-  skills!: ShowSkills[];
   isEdit:boolean = false;
   batchId:number;
-  constructor(private batchService: BatchService
-    , private skillService: SkillsService, 
+  name:any;
+  p:number=1;
+
+  constructor(
+    private batchService: BatchService, 
     private formBuilder: FormBuilder,
     private toastr:ToastrService,
     private router:Router,
@@ -49,9 +51,7 @@ export class BatchesComponent implements OnInit {
       })
       
     }
-    // this.router.navigateByUrl("/batch");
     this.getBatches();
-    this.getSkills();
 
     this.batchForm = this.formBuilder.group({
       name: [null],
@@ -59,7 +59,6 @@ export class BatchesComponent implements OnInit {
       endDate: [null],
       capacity: [null],
       technology: [null],
-      skill_Name: [null]
     });
   }
 
@@ -77,16 +76,6 @@ export class BatchesComponent implements OnInit {
     })
   }
 
-  getSkills() {
-    this.skillService.getSkills().subscribe({
-      next: (res) => {
-        this.skills = res;
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
-  }
 
   submit(){
     if(this.isEdit)
@@ -133,5 +122,44 @@ export class BatchesComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  search(){
+    if(this.name === '')
+    {
+      this.ngOnInit();
+    }
+    else{
+      this.batches = this.batches.filter((res)=>{
+        return res.name.toLocaleLowerCase().match(this.name.toLocaleLowerCase());
+      })
+    }
+  }
+
+  private isAscending = true;
+  SortAscending()
+  {
+    this.batches = this.batches.sort((a:any, b:any) => a.id - b.id);
+  }
+
+  toggleSortById() {
+    if(this.isAscending)
+    {
+      this.SortAscending();
+      this.isAscending=false;
+    }
+    else{
+      this.SortDescending();
+      this.isAscending=true;
+    }
+  }
+  
+  SortDescending(){
+    this.batches = this.batches.sort((a:any, b:any) => b.id - a.id);
+  }
+
+  resetPage()
+  {
+    this.router.navigateByUrl("/home/batch");
   }
 }

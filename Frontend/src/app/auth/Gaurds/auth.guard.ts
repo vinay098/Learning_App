@@ -24,15 +24,4 @@ export const authGuard: CanActivateFn =
         }
       })
     )
-
-    // return 
-
-    // if(authService.isLoggedin()){
-    //   return true;
-    // }
-    // else{
-    //   toastr.error("login first");
-    //   router.navigate(['/login']);
-    //   return false;
-    // }
   };

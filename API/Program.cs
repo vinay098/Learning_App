@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
 
 
@@ -36,6 +37,7 @@ builder.Services.AddScoped<IBatch,BatchRepository>();
 builder.Services.AddScoped<ICourse,CourseService>();
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
 
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //identity core service
@@ -44,6 +46,7 @@ builder.Services.AddIdentityCore<User>(option=>{
     option.Password.RequireDigit=true;
     option.Password.RequireUppercase=true;
     option.Password.RequireNonAlphanumeric=false;
+    option.Lockout.AllowedForNewUsers = false;
 })
 .AddRoles<IdentityRole>() //be able to add role
 .AddRoleManager<RoleManager<IdentityRole>>() //able to make use of roleManager
@@ -92,7 +95,15 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseStaticFiles(
+    new StaticFileOptions
+    {
+        FileProvider = new PhysicalFileProvider(
+            Path.Combine(builder.Environment.ContentRootPath,"Uploads")
+        ),
+        RequestPath = "/Resources"
+    }
+);
 app.UseCors(option=>option
 .AllowAnyOrigin()
 .AllowAnyMethod()

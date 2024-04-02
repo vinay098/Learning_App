@@ -27,13 +27,13 @@ export class LoginComponent implements OnInit {
     private toastr: ToastrService,private userStore:UserStoreService){
       //not show Login page if user Logged In
 
-      // this.authService.user$.pipe(take(1)).subscribe({
-      //   next:(user:SetUser |null)=>{
-      //     if(user){
-      //      this.router.navigateByUrl('/home');
-      //     }
-      //   }
-      // })
+      this.authService.user$.pipe(take(1)).subscribe({
+        next:(user:SetUser |null)=>{
+          if(user){
+           this.router.navigateByUrl('/home');
+          }
+        }
+      })
     }
 
   ngOnInit(): void {
@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       password:['',[Validators.required,Validators.minLength(6),Validators.maxLength(15)]]
     });
   }
+  
   hideshowpass(){
     this.isText =!this.isText;
     this.isText  ? this.eyeIcon = "fa-regular fa-eye" : this.eyeIcon = "fa-regular fa-eye-slash";
@@ -54,12 +55,9 @@ export class LoginComponent implements OnInit {
     if(this.loginform.valid){
       this.authService.login(this.loginform.value).subscribe({
         next:(res) =>{
-          // console.log(res);
-          // alert('Login Success');
           const payload = this.authService.decodedToken();
           console.log(payload);
           console.log(payload.unique_name+" "+payload.role);
-          this.userStore.setUserNameFromStore(payload.unique_name);
           this.userStore.setRoleFromStore(payload.role);
           this.toastr.success("Login Success");
           if(payload.role === 'employee')
@@ -84,30 +82,5 @@ export class LoginComponent implements OnInit {
     }
    
   }
-
-  // login2(){
-  //   this.submitted = true;
-  //   this.errorMessages = [];
-  //   if(this.loginform.valid){
-  //     this.auth2.login(this.loginform.value).subscribe({
-  //       next:(res) =>{
-  //         this.auth2.storeToken(res.token);
-  //         alert('Login Success');
-  //         this.router.navigateByUrl('/home');
-  //       },
-  //       error: error =>{
-  //         console.log(error);
-  //         if(error.error.errors){
-  //           this.errorMessages = error.error.errors;
-  //         }
-  //         else{
-  //           this.errorMessages.push(error.error);
-  //         }
-          
-  //       }
-  //     });
-  //   }
-   
-  // }
 
 }

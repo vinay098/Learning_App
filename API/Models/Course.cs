@@ -10,10 +10,11 @@ namespace API.Models
         public int Id {get;set;}
         public String Name {get;set;}
         public String Description {get;set;}
-        public string Batch_Id {get;set;}
+        public string ImageUrl {get;set;}
+        public int BatchId {get;set;}
         public Batch Batch {get;set;}
-        public int ModuleId {get;set;}
-        public LearnModule Module {get;set;}
         public ICollection<CourseSkills> CourseSkills {get;set;}
+        public string UserId {get;set;}
+        public ICollection<User> Users{get;set;}
     }
 }

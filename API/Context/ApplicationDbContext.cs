@@ -61,5 +61,6 @@ namespace API.Context
         public DbSet<BatchModule> BatchModules {get;set;}
         public DbSet<Course> Courses {get;set;}
         public DbSet<CourseSkills> CourseSkills {get;set;}
+
     }
 }

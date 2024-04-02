@@ -24,13 +24,17 @@ export class AppComponent implements OnInit {
     {
       this.authService.autoLogin();
       this.refreshToken();
+      if(this.authService.isTokenExpired())
+      {
+        this.authService.logout();
+      }
     }
   }
 
   private refreshToken(){
     const jwt = this.authService.getJwt();
     if(jwt){
-      console.log(jwt);
+      // console.log(jwt);
       this.authService.refreshUser(jwt).subscribe({
         next:_ =>{},
         error: _ =>{

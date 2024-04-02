@@ -27,7 +27,7 @@ import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
   ],
   exports:[
     LoginComponent,
-    SignupComponent
+    SignupComponent,
   ]
 })
 export class AuthModule { }

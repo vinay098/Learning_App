@@ -79,3 +79,5 @@ C:\Users\E.Vinay\Desktop\POC\API\obj\Debug\net7.0\ref\API.dll
 C:\Users\E.Vinay\Desktop\POC\api\obj\Debug\net7.0\API.csproj.Up2Date
 C:\Users\E.Vinay\Desktop\POC\API\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\E.Vinay\Desktop\POC\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\E.Vinay\Desktop\POC\api\obj\Debug\net7.0\API.sourcelink.json
+C:\Users\E.Vinay\Desktop\POC\Api\bin\Debug\net7.0\API.staticwebassets.runtime.json

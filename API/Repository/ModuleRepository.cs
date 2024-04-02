@@ -7,6 +7,7 @@ using API.Context;
 using API.DTOs.Module_DTO;
 using API.Interface;
 using API.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository
@@ -14,9 +15,12 @@ namespace API.Repository
     public class ModuleRepository : IModule
     {
         private readonly ApplicationDbContext _context;
-        public ModuleRepository(ApplicationDbContext context)
+        private readonly IMapper _mapper;
+
+        public ModuleRepository(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<ModuleDto> AddModuleAsync(string user_id, ModuleDto obj)
@@ -55,20 +59,8 @@ namespace API.Repository
         public async Task<IList<ModuleDto>> GetAllModulesAsync()
         {
             var module = await _context.Modules.ToListAsync();
-            var module_dto = new List<ModuleDto>();
-
-            foreach(var val in module)
-            {
-                var dto = new ModuleDto();
-                dto.Id = val.Id;
-                dto.Name =val.Module_Name;
-                dto.Level = val.Proefficiency_level;
-                dto.Learning_Type =val.Learning_Type;
-                dto.Certification_Type = val.Certification_Type;
-                module_dto.Add(dto);
-            }
-
-            return module_dto;
+            var res = _mapper.Map<List<LearnModule>,List<ModuleDto>>(module);
+            return res;
         }
 
         public async Task<LearnModule> GetModuleByIdAsync(int id)
@@ -79,22 +71,10 @@ namespace API.Repository
 
         public async Task<ModuleDto> GetModuleDtoByIdAsync(int id)
         {
-            var module = await _context.Modules.FindAsync(id);
-            if(module == null)
-            {
-                throw new Exception("Could not find module");
-            }
-
-            var dto = new ModuleDto
-            {
-                Id = module.Id,
-                Name = module.Module_Name,
-                Level = module.Proefficiency_level,
-                Learning_Type = module.Learning_Type,
-                Certification_Type = module.Certification_Type
-            };
-
-            return dto;
+            var module = await _context.Modules.ToListAsync();
+            var ans = _mapper.Map<List<LearnModule>,List<ModuleDto>>(module);
+            var res = ans.FirstOrDefault(x=>x.Id==id);
+            return res;
         }
 
         public async Task UpdateModuleAsync(int id,string user_Id, ModuleDto obj)
@@ -111,6 +91,14 @@ namespace API.Repository
            updateModule.Certification_Type =obj.Certification_Type;
            updateModule.UserId = user_Id;
            await _context.SaveChangesAsync();
+        }
+         public async Task<IList<string>> GetModuleName(int batch_id)
+        {
+            var ans = await _context.BatchModules
+                  .Where(c => c.BatchId == batch_id)
+                  .Select(s => s.Module.Module_Name).ToListAsync();
+
+            return ans;
         }
     }
 }

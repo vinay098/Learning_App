@@ -9,5 +9,6 @@ namespace API.DTOs.MapperDto
     {
         public string BatchName { get; set; }
         public string ModuleName {get; set; }
+       
     }
 }

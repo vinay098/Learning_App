@@ -13,8 +13,6 @@ namespace API.Models
         public DateTime EndDate { get; set; }
         public int Capacity { get; set; }
         public  string Technology { get; set;}
-        public int SkillId {get; set; }
-        public ICollection<Skills> Skills { get; set; }
         public string UserId { get; set; }
         public ICollection<User> Users { get; set; }
         public ICollection<BatchModule> BatchModules { get; set; }

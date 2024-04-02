@@ -1,0 +1,5 @@
+<ul *ngIf="errorMessages" class="text-danger">
+    <li *ngFor="let error of errorMessages" style="list-style: none;">
+        {{error}}
+    </li>
+</ul>

@@ -6,6 +6,7 @@ using API.Context;
 using API.DTOs.Skills_DTO;
 using API.Interface;
 using API.Models;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Repository
@@ -13,11 +14,12 @@ namespace API.Repository
     public class SkillsRepository : ISkills
     {
         private readonly ApplicationDbContext _context;
+        private readonly IMapper _mapper;
 
-
-        public SkillsRepository(ApplicationDbContext context)
+        public SkillsRepository(ApplicationDbContext context,IMapper mapper)
         {
             _context = context;
+            _mapper = mapper;
         }
 
         public async Task<Skills> AddSkillsAsync(string id,SkillDto skill)
@@ -39,10 +41,21 @@ namespace API.Repository
              await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Skills>> GetAsync()
+        public async Task<List<SkillDto>> GetAllSkillsAsync()
         {
             var skills = await _context.Skills.ToListAsync();
-            return skills;
+            var res =  _mapper.Map<List<Skills>,List<SkillDto>>(skills);
+
+            return res;
+        }
+
+        public async Task<SkillDto> GetSkillDtoById(int id)
+        {
+            var skills = await _context.Skills.ToListAsync();
+            var ans =  _mapper.Map<List<Skills>,List<SkillDto>>(skills);
+            var res = ans.FirstOrDefault(x=>x.Id==id);
+
+            return res;
         }
 
         public async Task<Skills> GetSkillsById(int id)

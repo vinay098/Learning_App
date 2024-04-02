@@ -1,26 +1,31 @@
+
+<h2 class="container text-center">Batch Module Map</h2>
 <form [formGroup]="batchModuleForm" (ngSubmit)="submit()">
     <div class="row">
         <div class="form-group mt-3 col-md-3">
             <label class="mb-2">Batch Name</label>
             <select class="form-select" formControlName="batchName">
                 <option>Open this select menu</option>
-                <option *ngFor="let val of batch">{{val.name}}</option>
+                <option *ngFor="let val of batch" value="{{val.id}}">{{val.name}}</option>
             </select>
         </div>
         <div class="form-group mt-3 col-md-3">
             <label class="mb-2">Module Name</label>
-            <select class="form-select" formControlName="moduleName">
-                <option>Open this select menu</option>
-                <option *ngFor="let val of module">{{val.name}}</option>
-            </select>
+            <ng-multiselect-dropdown [placeholder]="'Select a value'" 
+                [settings]="dropdownSettings"
+                [data]="dropdownList"
+                 formControlName="moduleName" 
+                (onSelect)="onItemSelect($event)"
+                (onDeSelect)="onItemDeSelect($event)"
+                >
+            </ng-multiselect-dropdown>
         </div>
-
+        
         <div class="row  d-flex">
             <div class="form-group mt-3 col-md-3 align-items-end">
                 <button type="submit" class="btn btn-primary mt-3">Map Value</button>
             </div>
         </div>
-
     </div>
 </form>
 
@@ -28,26 +33,28 @@
     <table class="table table-bordered table-striped mb-0">
         <thead>
             <tr class="table-primary">
+                <th scope="col" class="text-center">Batch Id</th>
                 <th scope="col" class="text-center">Batch Name</th>
                 <th scope="col" class="text-center">Capacity</th>
                 <th scope="col" class="text-center">Technology</th>
                 <th scope="col" class="text-center">Batch Start</th>
                 <th scope="col" class="text-center">Batch End</th>
-                <th scope="col" class="text-center">Module Name</th>
-                <th scope="col" class="text-center">Level</th>
-                <th scope="col" class="text-center">Certification Type</th>
+                <th scope="col" class="text-center">Module Names</th>
+                <th scope="col" class="text-center">Action</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let val of batchModuleDto">
+                <td class="text-center">{{val.batchId}}</td>
                 <td class="text-center">{{val.batchName}}</td>
                 <td class="text-center">{{val.capacity}}</td>
                 <td class="text-center">{{val.technology}}</td>
                 <td class="text-center">{{val.batch_Start | date }}</td>
                 <td class="text-center">{{val.batch_End | date}}</td>
-                <td class="text-center">{{val.moduleName}}</td>
-                <td class="text-center">{{val.level}}</td>
-                <td class="text-center">{{val.certification_Type}}</td>
+                <td class="text-center">{{val.moduleName }}</td>
+                <td class="text-center">
+                    <button type="button" (click)="deleteVal(val.batchId)" class="btn btn-danger">Delete Mapped</button>
+                </td>
             </tr>
 
         </tbody>

@@ -1,35 +1,38 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
+using System.Runtime.Intrinsics.X86;
 using System.Threading.Tasks;
+using API.DTOs.Batch_DTO;
+using API.DTOs.Course_DTO;
 using API.DTOs.MapperDto;
+using API.DTOs.Module_DTO;
+using API.DTOs.Skills_DTO;
 using API.Models;
 using AutoMapper;
 
 namespace API.AutoMapper
 {
-    public class MappingProfile :Profile
+    public class MappingProfile : Profile
     {
         public MappingProfile()
         {
-            CreateMap<SkillModule,SkillModuleValuesDto>()
-            .ForMember(sm=>sm.SkillName,m=>m.MapFrom(sm=>sm.Skills.Skill_Name))
-            .ForMember(sm=>sm.SkillFamily,m=>m.MapFrom(sm=>sm.Skills.Skill_Family))
-            .ForMember(sm=>sm.ModuleName,m=>m.MapFrom(sm=>sm.Module.Module_Name))
-            .ForMember(sm=>sm.Level,m=>m.MapFrom(sm=>sm.Module.Proefficiency_level))
-            .ForMember(sm=>sm.Learning_Type,m=>m.MapFrom(sm=>sm.Module.Learning_Type))
-            .ForMember(sm=>sm.Certification_Type,m=>m.MapFrom(sm=>sm.Module.Certification_Type));
+            CreateMap<Batch, BatchDto>()
+            .ForMember(dest => dest.Id, m => m.MapFrom(src => src.Id))
+            .ForMember(dest => dest.Name, m => m.MapFrom(src => src.BatchName))
+            .ForMember(dest => dest.StartDate, m => m.MapFrom(src => src.StartDate.ToString()))
+            .ForMember(dest => dest.EndDate, m => m.MapFrom(src => src.EndDate.ToString()))
+            .ForMember(dest => dest.Capacity, m => m.MapFrom(src => src.Capacity))
+            .ForMember(dest => dest.Technology, m => m.MapFrom(src => src.Technology));
 
-            CreateMap<BatchModule,BatchModuleDisplayDto>()
-            .ForMember(bm=>bm.BatchName,m=>m.MapFrom(bm=>bm.Batch.BatchName))
-            .ForMember(bm=>bm.Capacity,m=>m.MapFrom(bm=>bm.Batch.Capacity))
-            .ForMember(bm=>bm.Technology,m=>m.MapFrom(bm=>bm.Batch.Technology))
-            .ForMember(bm=>bm.Batch_Start,m=>m.MapFrom(bm=>bm.Batch.StartDate.ToString()))
-            .ForMember(bm=>bm.Batch_End,m=>m.MapFrom(bm=>bm.Batch.EndDate.ToString()))
-            .ForMember(bm=>bm.ModuleName,m=>m.MapFrom(bm=>bm.Module.Module_Name))
-            .ForMember(bm=>bm.Level,m=>m.MapFrom(bm=>bm.Module.Proefficiency_level))
-            .ForMember(bm=>bm.Certification_Type,m=>m.MapFrom(bm=>bm.Module.Certification_Type));
-            
+            CreateMap<LearnModule,ModuleDto>()
+             .ForMember(dest=>dest.Name,m=>m.MapFrom(src=>src.Module_Name))
+             .ForMember(dest=>dest.Level,m=>m.MapFrom(src=>src.Proefficiency_level));
+
+            CreateMap<Skills,SkillDto>()
+            .ForMember(dest=>dest.Name,m=>m.MapFrom(src=>src.Skill_Name))
+            .ForMember(dest=>dest.Family,m=>m.MapFrom(src=>src.Skill_Family));
         }
     }
 }

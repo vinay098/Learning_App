@@ -6,5 +6,6 @@ export interface ViewMembers {
     gender: string,
     dob: string,
     email: string,
-    roles:string[]
+    roles:string[],
+    isApproved:boolean
 }

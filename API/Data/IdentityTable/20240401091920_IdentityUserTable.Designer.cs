@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.IdentityTable
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240315060703_IdentityUserTable")]
+    [Migration("20240401091920_IdentityUserTable")]
     partial class IdentityUserTable
     {
         /// <inheritdoc />

@@ -14,7 +14,7 @@ namespace API.Interface
         Task<BatchDto> AddBatchAsync(string user_id,BatchDto batch);
         Task DeleteBatchAsync(Batch batch);
         Task UpdateBatchAsync(int id,BatchDto batch);
-        Task<List<BatchDto>> GetAll();
+        // Task<List<BatchDto>> GetAll();
         Task<Batch> GetBatchByIdAsync(int id);
     }
 }

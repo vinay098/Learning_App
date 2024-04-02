@@ -58,6 +58,10 @@ namespace API.Controllers
             try
             {
                 var res = await _moduleRepo.GetModuleDtoByIdAsync(id);
+                if(res==null)
+                {
+                    return NotFound("id not found");
+                }
                 return Ok(res);
             }
             catch (Exception e)

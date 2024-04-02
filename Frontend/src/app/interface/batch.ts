@@ -5,5 +5,4 @@ export interface Batch {
     endDate:string,
     capacity:number,
     technology:string,
-    skill_Name: string
 }

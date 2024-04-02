@@ -18,6 +18,8 @@ export class LearnModuleComponent implements OnInit {
   module:Module[];
   isEdit:boolean = false;
   moduleId:number;
+  name:any;
+  p:number=1;
 
   constructor(private moduleService:ModuleService,
     private router:Router,private toastr:ToastrService,
@@ -109,5 +111,43 @@ export class LearnModuleComponent implements OnInit {
 
     })
   }
+
+  search(){
+    if(this.name === '')
+    {
+      this.ngOnInit();
+    }
+    else{
+      this.module = this.module.filter((res)=>{
+        return res.name.toLocaleLowerCase().match(this.name.toLocaleLowerCase());
+      })
+    }
+  }
+
+  private isAscending = true;
+  SortAscending()
+  {
+    this.module = this.module.sort((a:any, b:any) => a.id - b.id);
+  }
+
+  toggleSortById() {
+    if(this.isAscending)
+    {
+      this.SortAscending();
+      this.isAscending=false;
+    }
+    else{
+      this.SortDescending();
+      this.isAscending=true;
+    }
+  }
   
+  SortDescending(){
+    this.module = this.module.sort((a:any, b:any) => b.id - a.id);
+  }
+
+  resetPage()
+  {
+    this.router.navigateByUrl("/home/module");
+  }
 }

@@ -72,7 +72,7 @@
                 </div>
                 <div class="col-md-6 pb-2">
                   <div class="form-outline">
-                    <input  formControlName="contactNumber" placeholder="Enter Mobile Number" type="number" id="phoneNumber"
+                    <input  formControlName="contactNumber" placeholder="Enter Mobile Number" type="text" id="phoneNumber"
                       maxlength="10" [hiddenInput]="true" mask="XXXXXX0000" class="form-control form-control-lg"
                       [class.is-invalid]="submitted && registerForm.get('contactNumber')?.errors" required />
                     &nbsp;<span *ngIf="submitted && registerForm.get('contactNumber')?.hasError('required')"

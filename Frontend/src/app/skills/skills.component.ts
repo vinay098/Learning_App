@@ -20,6 +20,7 @@ export class SkillsComponent implements OnInit {
   skillId:number;
   isEdit:boolean = false;
   name:any;
+  p:number=1;
 
   constructor(private formBuilder:FormBuilder
     ,private router:Router,
@@ -36,8 +37,8 @@ export class SkillsComponent implements OnInit {
         next:(res)=>{
           // console.log(res);
           this.skillForm.patchValue({
-            Name:res.skill_Name,
-            Family:res.skill_Family
+            Name:res.name,
+            Family:res.family
           });
         }
       })
@@ -54,6 +55,8 @@ export class SkillsComponent implements OnInit {
     this.skillService.getSkills().subscribe({
       next:(res)=>{
         this.skills = res;
+        // console.log(res);
+        
       },
       error:(error)=>{
         console.log(error);
@@ -113,7 +116,7 @@ export class SkillsComponent implements OnInit {
     }
     else{
       this.skills = this.skills.filter((res)=>{
-        return res.skill_Name.toLocaleLowerCase().match(this.name.toLocaleLowerCase());
+        return res.name.toLocaleLowerCase().match(this.name.toLocaleLowerCase());
       })
     }
   }
@@ -121,5 +124,27 @@ export class SkillsComponent implements OnInit {
   resetPage()
   {
     this.router.navigateByUrl("/home/skills");
+  }
+
+  SortAscending():void 
+  {
+    this.skills = this.skills.sort((a:any, b:any) => a.id - b.id);
+  }
+  
+  private isAscending = true;
+  toggleSortById() {
+    if(this.isAscending)
+    {
+      this.SortAscending();
+      this.isAscending=false;
+    }
+    else{
+      this.SortDescending();
+      this.isAscending=true;
+    }
+  }
+  
+  SortDescending(){
+    this.skills = this.skills.sort((a:any, b:any) => b.id - a.id);
   }
 }
