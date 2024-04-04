@@ -1,10 +1,10 @@
-<h2 class="container text-center">Skill Module Map</h2>
+<h2 class="container text-center">Skill Module </h2>
 <form [formGroup]="smForm" (ngSubmit)="submit()">
     <div class="row">
         <div class="form-group mt-3 col-md-3">
             <label class="mb-2">Module Name</label>
             <select class="form-select" formControlName="moduleName">
-                <option>Open this select menu</option>
+                <option selected>Open this select menu</option>
                 <option *ngFor="let val of module" value="{{val.id}}">{{val.name}}</option>
             </select>
         </div>

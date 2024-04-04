@@ -34,20 +34,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpPost("add-course")]
-        public async Task<ActionResult> AddCourse(CourseDto obj)
-        {
-            try
-            {
-                var res = await _courseRepo.AddCourseAsync(obj);
-                return Ok(res);
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message);
-            }
-        }
-
         
         [HttpPost("add-course-with-image")]
         public async Task<ActionResult> AddCoursewithImage([FromForm]CourseCreateDto obj)
@@ -106,19 +92,6 @@ namespace API.Controllers
             }
         }
 
-        [HttpPut("update-course")]
-        public async Task<ActionResult> UpdateCourse(int id,CourseDisplayDto obj)
-        {
-            try
-            {
-               await _courseRepo.UpdateCourse(id,obj);
-               return Ok();
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message);
-            }
-        }
 
         [HttpDelete("delete-course/{id}")]
         public async Task<ActionResult> DeleteCourse(int id)
@@ -142,6 +115,20 @@ namespace API.Controllers
                 return Problem(e.Message);
             }
             
+        }
+
+        [HttpPut("update-course-with-image/{id}")]
+        public async Task<ActionResult> UpdateCourseWithImage(int id,[FromForm]CourseCreateDto obj)
+        {
+            try
+            {
+                await _courseRepo.UpdateCourseWithImage(id,obj);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
         }
     }
 }

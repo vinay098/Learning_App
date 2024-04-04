@@ -13,5 +13,6 @@ namespace API.DTOs
         public int Batch_Id {get;set;}
         public IFormFile Image {get;set;}
         public string image_path {get;set;}
+        public string path {get;set;}
     }
 }

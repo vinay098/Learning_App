@@ -1,0 +1,17 @@
+.my-custom-scrollbar {
+    position: relative;
+    height: 500px;
+    width: 75vw;
+    overflow: auto;
+  }
+  
+  /* Style for vertical scrollbar */
+  .table-wrapper-scroll-y {
+    display: block;
+  }
+  
+  /* Style for horizontal scrollbar */
+  .table-wrapper-scroll-x {
+    display: block;
+    overflow-x: auto;
+  }

@@ -30,6 +30,7 @@ export class SkillsComponent implements OnInit {
     }
     
   ngOnInit(): void {
+    this.getSkills();
     this.skillId = this.route.snapshot.params["id"]
     if(this.skillId){
       this.isEdit=true;
@@ -44,7 +45,7 @@ export class SkillsComponent implements OnInit {
       })
     }
 
-    this.getSkills();
+   
     this.skillForm = this.formBuilder.group({
       Name: [null],
       Family:[null],
@@ -56,7 +57,6 @@ export class SkillsComponent implements OnInit {
       next:(res)=>{
         this.skills = res;
         // console.log(res);
-        
       },
       error:(error)=>{
         console.log(error);
@@ -80,7 +80,7 @@ export class SkillsComponent implements OnInit {
     }
     else{
       this.skillService.addSkill(this.skillForm.value).subscribe({
-        next:(res:ShowSkills)=>{
+        next:(res:any)=>{
           // alert("Skills added successfully");
           this.toastr.success("Skills added successfully")
           this.skills.push(res);

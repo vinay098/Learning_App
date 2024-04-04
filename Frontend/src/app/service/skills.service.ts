@@ -17,7 +17,7 @@ export class SkillsService {
   }
   getSkills()
   {
-    return this.http.get<any>(this.skillUrl+'get-skills');
+    return this.http.get<ShowSkills[]>(this.skillUrl+'get-skills');
   }
   updateSkills(id:number,skill:Skill)
   {

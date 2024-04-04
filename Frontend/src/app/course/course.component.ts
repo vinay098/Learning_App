@@ -7,6 +7,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { BatchService } from '../service/batch.service';
 import { CourseCreateDto } from '../interface/course-create-dto';
 import { ToastrService } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-course',
@@ -19,10 +20,12 @@ export class CourseComponent implements OnInit {
   modules: Module[];
   course: Course[];
   selectedImage: File;
+  isEdit:boolean=false;
+  id:number;
   courseForm: FormGroup = new FormGroup({});
   constructor(private courseService: CourseService,
     private formBuilder: FormBuilder,private toastr:ToastrService,
-    private batchService: BatchService) { }
+    private batchService: BatchService,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
     this.getCourses();
@@ -32,9 +35,20 @@ export class CourseComponent implements OnInit {
       description: [null],
       batch_Id: [null],
       image: [null],
-    })
-
-
+    });
+    this.id = this.route.snapshot.params["id"];
+    if(this.id)
+    {
+      this.isEdit = true;
+      this.courseService.getCourseById(this.id).subscribe({
+        next:(res)=>{
+          this.courseForm.patchValue({
+            name:res.batchName,
+            description:res.courseDescription,
+          })
+        }
+      })
+    }
   }
 
   getCourses() {
@@ -63,8 +77,6 @@ export class CourseComponent implements OnInit {
 
   itemChange(event: any) {
     this.selectedImage = event.target.files[0];
-    // console.log(event);
-    // console.log(this.selectedImage);
   }
 
   submit() {

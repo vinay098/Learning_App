@@ -13,10 +13,10 @@ namespace API.Repository
 {
     public class SkillsRepository : ISkills
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public SkillsRepository(ApplicationDbContext context,IMapper mapper)
+        public SkillsRepository(AppDbContext context,IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

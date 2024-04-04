@@ -16,5 +16,8 @@ namespace API.Interface
         Task UpdateBatchAsync(int id,BatchDto batch);
         // Task<List<BatchDto>> GetAll();
         Task<Batch> GetBatchByIdAsync(int id);
+        Task AssignBatch(AssignBatch obj);
+
+        Task<List<AssignBatchDisplay>> GetAssignedBatch();
     }
 }

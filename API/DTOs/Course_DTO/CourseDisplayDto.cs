@@ -17,5 +17,6 @@ namespace API.DTOs.Course_DTO
         public string CourseDescription { get; set; }
         public string BatchName { get; set; }
         public List<string> SkillNames { get; set; } = new List<string>();
+        public string imageUrl {get;set;}
     }
 }

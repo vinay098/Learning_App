@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, Output,EventEmitter } from '@angular/core';
 import { AuthServiceService } from '../../service/auth-service.service';
 import { ToastrService } from 'ngx-toastr';
+
 
 @Component({
   selector: 'app-navbar',
@@ -8,10 +9,11 @@ import { ToastrService } from 'ngx-toastr';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
+
+
   constructor(public authServiec:AuthServiceService,private toastr:ToastrService){}
 
   logout(){
     this.authServiec.logout();
   }
-
 }

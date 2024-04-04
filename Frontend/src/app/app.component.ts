@@ -10,7 +10,7 @@ import {isPlatformBrowser} from '@angular/common';
 })
 export class AppComponent implements OnInit {
 
-
+  sideNavStatus:boolean=false;
   constructor(private authService:AuthServiceService
     ,@Inject(PLATFORM_ID) private platform_id:object,
     ){

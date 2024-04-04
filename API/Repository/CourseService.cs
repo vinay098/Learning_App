@@ -11,37 +11,17 @@ namespace API.Repository
 {
     public class CourseService : ICourse
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IWebHostEnvironment _environment;
         private readonly IMapper _mapper;
 
-        public CourseService(ApplicationDbContext context
+        public CourseService(AppDbContext context
         , IWebHostEnvironment environment, IMapper mapper)
         {
             _context = context;
             _environment = environment;
             _mapper = mapper;
         }
-
-        public async Task<Course> AddCourseAsync(CourseDto obj)
-        {
-            var batch_Id = await _context.Batches
-            .Where(b => b.BatchName == obj.BatchName)
-            .Select(b => b.Id).FirstAsync();
-
-            var add_to_course_model = new Course()
-            {
-                Name = obj.CourseName,
-                Description = obj.CourseDescription,
-                BatchId = batch_Id,
-            };
-
-            _context.Courses.Add(add_to_course_model);
-            await _context.SaveChangesAsync();
-            return add_to_course_model;
-        }
-
-
 
         public async Task<Course> AddCoursewithImage(string User_Id, CourseCreateDto model)
         {
@@ -50,7 +30,7 @@ namespace API.Repository
             {
                 var imagePath = SaveImage(model.Image); // Save image to storage
                 model.image_path = imagePath;
-
+                model.path = GetImage(imagePath);
             }
 
             // Create Course:
@@ -58,7 +38,7 @@ namespace API.Repository
             {
                 Name = model.Name,
                 Description = model.Description,
-                ImageUrl = model.image_path,
+                ImageUrl = model.path,
                 BatchId = model.Batch_Id,
                 UserId = User_Id,
             };
@@ -71,7 +51,7 @@ namespace API.Repository
 
         private string SaveImage(IFormFile image)
         {
-            var contentPath = _environment.ContentRootPath;
+            var contentPath = _environment.WebRootPath;
             var path = Path.Combine(contentPath, "Uploads");
             if (!Directory.Exists(path))
             {
@@ -93,22 +73,27 @@ namespace API.Repository
             stream.Close();
             return newFileName;
         }
-
         private string GetImage(string fileName)
         {
-            var contentPath = _environment.ContentRootPath;
-            var path = Path.Combine(contentPath, "Uploads", fileName);
-            if (System.IO.File.Exists(path))
-            {
-                return path;
-            }
-            else
-            {
-                return null; 
-            }
-           
+            string imageUrl = "";
+            string HostUrl = "http://localhost:5100/";
+            imageUrl = HostUrl + "/uploads/" + fileName;
+            return imageUrl;
         }
 
+        private string GetFilePath(string imageName)
+        {
+            return _environment.WebRootPath + "\\uploads\\" + imageName;
+        }
+
+        private void RemoveImage(string imageName)
+        {
+            string FilePath = GetFilePath(imageName);
+            if (File.Exists(FilePath))
+            {
+                File.Delete(FilePath);
+            }
+        }
 
         public async Task AddCourseSkillAsync(CourseSkillDto obj)
         {
@@ -132,6 +117,9 @@ namespace API.Repository
 
         public async Task DeleteCource(Course obj)
         {
+            var uri = new Uri(obj.ImageUrl);
+            string fileName = uri.Segments.Last();
+            RemoveImage(fileName);
             _context.Courses.Remove(obj);
             await _context.SaveChangesAsync();
         }
@@ -194,7 +182,7 @@ namespace API.Repository
             }
 
             var batch_name = await _context.Batches
-            .Where(x => x.Id == Convert.ToInt32(course.BatchId))
+            .Where(x => x.Id == course.BatchId)
             .Select(x => x.BatchName).FirstAsync();
 
 
@@ -204,6 +192,7 @@ namespace API.Repository
                 CourseName = course.Name,
                 CourseDescription = course.Description,
                 BatchName = batch_name,
+                imageUrl = course.ImageUrl
             };
             var names = await GetAllSkillName(valuetodisplay.CourseId);
             foreach (var name in names)
@@ -213,25 +202,7 @@ namespace API.Repository
             return valuetodisplay;
         }
 
-        public async Task UpdateCourse(int id, CourseDisplayDto obj)
-        {
-            var course = await _context.Courses.FindAsync(id);
-
-            var batch_id = await _context.Batches
-            .Where(x => x.BatchName == obj.BatchName)
-            .Select(x => x.Id).FirstAsync();
-
-
-            if (course == null)
-            {
-                throw new Exception("Course Does not exist");
-            }
-            course.Name = obj.CourseName;
-            course.Description = obj.CourseDescription;
-            course.BatchId = batch_id;
-            await _context.SaveChangesAsync();
-        }
-
+       
         public async Task<List<FacultyCourseDto>> GetCourseByFacultyId(string user_id)
         {
             var courses = await _context.Courses
@@ -255,6 +226,31 @@ namespace API.Repository
             return response;
         }
 
-
+        public async Task UpdateCourseWithImage(int id, CourseCreateDto obj)
+        {
+            var course = await _context.Courses.FindAsync(id);
+            if (course == null)
+            {
+                throw new Exception("Course Does not exist");
+            }
+            course.Name = obj.Name;
+            course.Description = obj.Description;
+            course.BatchId = obj.Batch_Id;
+            if (obj.Image != null)
+            {
+                var uri = new Uri(course.ImageUrl);
+                string fileName = uri.Segments.Last();
+                RemoveImage(fileName);
+                var imagePath = SaveImage(obj.Image);
+                obj.image_path = imagePath;
+                obj.path = GetImage(imagePath);
+                course.ImageUrl = obj.path;
+            }
+            else{
+                course.ImageUrl = course.ImageUrl;
+            }
+            
+            await _context.SaveChangesAsync();
+        }
     }
 }

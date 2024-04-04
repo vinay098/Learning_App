@@ -99,5 +99,33 @@ namespace API.Controllers
             }
         }
 
+        [HttpPut("assign-batch")]
+        public async Task<ActionResult> AssignBatch(AssignBatch obj)
+        {
+            try
+            {
+                await _batchrepo.AssignBatch(obj);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("get-assigned-batch")]
+        public async Task<ActionResult> GetAssignedBatch()
+        {
+            try
+            {
+                var response = await _batchrepo.GetAssignedBatch();
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
     }
 }

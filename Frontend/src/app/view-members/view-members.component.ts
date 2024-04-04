@@ -31,7 +31,7 @@ export class ViewMembersComponent implements OnInit {
     {
       this.getFaculty();
     }
-    console.log(this.getMembers());
+    // console.log(this.getMembers());
     
   }
 
@@ -40,14 +40,6 @@ export class ViewMembersComponent implements OnInit {
     this.adminService.getAllMembers().subscribe({
       next:(res)=>{
         this.members= res;
-        // console.log(this.members);
-        // var isapproved=null;  
-        // for(let i=0;i<res.length;i++)
-        // {
-        //   isapproved = res[i].isApproved;
-        //   console.log(isapproved);
-          
-        // }
       }
     })
   }
@@ -106,6 +98,7 @@ export class ViewMembersComponent implements OnInit {
           // console.log(res);
           this.toastr.warning("user is been disapproved");
           this.getMembers();
+
         },
         error:(err)=>{
           console.log(err);

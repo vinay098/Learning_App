@@ -1,13 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400&display=swap');
 *{
     font-family: Poppins,sans-serif;
+    font-size: 0.8rem;
 }
-/* main{
-    position: absolute;
-    width: 100%;
-    top: 4rem;
-    z-index: 1;
-} */
 .section{
 
     left: 0rem;
@@ -20,4 +15,8 @@
     left: 0%;
     position: absolute;
     right: 75%;
+}
+
+li{
+    color: white;
 }

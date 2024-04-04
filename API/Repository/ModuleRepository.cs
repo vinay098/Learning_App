@@ -14,10 +14,10 @@ namespace API.Repository
 {
     public class ModuleRepository : IModule
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IMapper _mapper;
 
-        public ModuleRepository(ApplicationDbContext context,IMapper mapper)
+        public ModuleRepository(AppDbContext context,IMapper mapper)
         {
             _context = context;
             _mapper = mapper;

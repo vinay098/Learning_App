@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Batch } from '../interface/batch';
+import { AssignBatch } from '../interface/assign-batch';
+import { GetAssignedBatch } from '../interface/get-assigned-batch';
 
 @Injectable({
   providedIn: 'root'
@@ -29,6 +31,16 @@ export class BatchService {
   deleteBatch(id:number)
   {
     return this.http.delete(this.batchUrl+"delete-batch/"+id);
+  }
+
+  assignBatch(assign:AssignBatch)
+  {
+    return this.http.put(this.batchUrl+"assign-batch",assign);
+  }
+
+  getAssignedBatch()
+  {
+    return this.http.get<GetAssignedBatch[]>(this.batchUrl+"get-assigned-batch");
   }
 }
 

@@ -54,7 +54,7 @@ export class SkillModuleComponent {
       next: (res) => {
         this.Skills = res;
         for (let i = 0; i < res.length; i++) {
-          tmp.push({ id: res[i].id, name: res[i].skill_Name });
+          tmp.push({ id: res[i].id, name: res[i].name });
         }
         this.dropdownList = tmp;
       },
@@ -114,7 +114,6 @@ export class SkillModuleComponent {
     this.selectedItems = this.selectedItems
     .filter(selectedItem => selectedItem.id !== item.id);
     console.log(this.selectedItems);
-    
   }
 
   deleteMapped(id:number)

@@ -118,7 +118,8 @@ namespace API.Controllers
                         Gender = user.Gender,
                         DOB = Convert.ToString(user.Dob),
                         Email = user.Email,
-                        Roles = await _userManager.GetRolesAsync(user)
+                        Roles = await _userManager.GetRolesAsync(user),
+                        IsApproved = user.LockoutEnabled
                     };
                     viewDto.Add(dto);
                 }
@@ -149,7 +150,8 @@ namespace API.Controllers
                         Gender = user.Gender,
                         DOB = Convert.ToString(user.Dob),
                         Email = user.Email,
-                        Roles = await _userManager.GetRolesAsync(user)
+                        Roles = await _userManager.GetRolesAsync(user),
+                        IsApproved = user.LockoutEnabled
                     };
                     viewDto.Add(dto);
                 }

@@ -1,6 +1,7 @@
 
 using System.Security.Claims;
 using API.Context;
+using API.DTOs.Batch_DTO;
 using API.DTOs.MapperDto;
 using API.Interface;
 using API.Models;
@@ -14,11 +15,11 @@ namespace API.Controllers
     [Route("api/[controller]")]
     public class MapperController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
+        private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _accessor;
         private readonly IModule _modulerepo;
 
-        public MapperController(ApplicationDbContext context,
+        public MapperController(AppDbContext context,
         IHttpContextAccessor accessor,
         IModule modulerepo)
         {
@@ -64,7 +65,7 @@ namespace API.Controllers
                 {
                     var ob = new SkillModule();
                     ob.ModuleId = Convert.ToInt32(obj.ModuleId);
-                    ob.SkillId =val;
+                    ob.SkillId = val;
                     ob.UserId = user_Id;
                     _context.Add(ob);
                 }
@@ -122,7 +123,7 @@ namespace API.Controllers
             {
                 var modules = await _context.Modules.ToListAsync();
                 var addedData = new List<SkillModuleValuesDto>();
-                foreach(var val in modules)
+                foreach (var val in modules)
                 {
                     var dto = new SkillModuleValuesDto();
                     dto.ModuleId = val.Id;
@@ -131,9 +132,9 @@ namespace API.Controllers
                     dto.Learning_Type = val.Learning_Type;
                     dto.Certification_Type = val.Certification_Type;
                     var names = await _context.SkillModules
-                    .Where(m=>m.ModuleId == val.Id)
-                    .Select(s=>s.Skills.Skill_Name).ToListAsync();
-                    foreach(var name in names)
+                    .Where(m => m.ModuleId == val.Id)
+                    .Select(s => s.Skills.Skill_Name).ToListAsync();
+                    foreach (var name in names)
                     {
                         dto.SkillName.Add(name);
                     }
@@ -176,8 +177,8 @@ namespace API.Controllers
                 foreach (var val in obj.SkillId)
                 {
                     var ob = new SkillModule();
-                    ob.ModuleId =Convert.ToInt32(obj.ModuleId);
-                    ob.SkillId =val;
+                    ob.ModuleId = Convert.ToInt32(obj.ModuleId);
+                    ob.SkillId = val;
                     ob.UserId = user_Id;
                     _context.Add(ob);
                 }
@@ -196,8 +197,8 @@ namespace API.Controllers
         {
             try
             {
-                var res = await _context.SkillModules.Where(m=>m.ModuleId==id).ToListAsync();
-                if(res == null)
+                var res = await _context.SkillModules.Where(m => m.ModuleId == id).ToListAsync();
+                if (res == null)
                 {
                     return NotFound("Map value Does Not Exist");
                 }
@@ -211,6 +212,29 @@ namespace API.Controllers
                 return Problem(e.Message);
             }
         }
+
+        [HttpPost("assign-batch-to-faculty")]
+        public async Task<ActionResult> AssignBatch(AssignBatch obj)
+        {
+            // string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var ob = new BatchFaculty();
+                ob.BatchId = obj.BatchID;
+                ob.FacultyId = obj.Faculty_id;
+                _context.Add(ob);
+                await _context.SaveChangesAsync();
+                var ans = _context.BatchFaculties.Include(b => b.User.UserName);
+                var res = await _context.SkillModules.ToListAsync();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+
 
 
     }

@@ -1,6 +1,6 @@
 
 <h2 class="container text-center ">Skills Page</h2>
-<form [formGroup]="skillForm" (ngSubmit)="submit()">
+<form [formGroup]="skillForm" (ngSubmit)="submit()" class="mx-2">
     <div class="form-group mt-3">
         <label for="name" class="mb-2"> Skill Name</label>
         <input type="text" formControlName="Name" class="form-control" id="name" placeholder="Enter Skill Name">
@@ -18,15 +18,13 @@
     <button type="button" (click)="resetPage()" class="btn btn-primary mt-3 mx-2 ">Reset Page</button>
 </form>
 
-<div class="container mt-2 mx-0">
+<div class="container mt-2">
     <nav class="navbar">
         <input type="text" name="name" [(ngModel)]="name" (ngModelChange)="search()" placeholder="Enter text to search"
             class="form-control" />
     </nav>
 </div>
-<div class="table-wrapper-scroll-y my-custom-scrollbar mt-4">
-  
-    
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-4 mx-2">
     <table class="table table-bordered table-striped mb-0">
         <thead>
             <tr class="table-primary">
@@ -39,7 +37,7 @@
         
         <tbody>
            
-            <tr *ngFor="let skill of skills |paginate :{ itemsPerPage: 3, currentPage: p }">
+            <tr *ngFor="let skill of skills   | paginate :{ itemsPerPage: 3, currentPage: p }">
                 <td class="text-center">{{skill.id}}</td>
                 <td class="text-center">{{skill.name}}</td>
                 <td class="text-center">{{skill.family}}</td>

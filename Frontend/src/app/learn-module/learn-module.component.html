@@ -9,21 +9,34 @@
 
         <div class="form-group mt-3 col-md-3">
             <label for="level" class="mb-2"> Module Level </label>
-            <input type="text" formControlName="level" class="form-control" id="level" placeholder="Enter Level">
+            <select class="form-select" aria-label="Default select example" formControlName="level">
+                <option selected>Open this select menu</option>
+                <option value="Basic">Basic</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermidate">Intermidate</option>
+                <option value="Advance">Advance</option>
+                <option value="Expert">Expert</option>
+              </select>
         </div>
 
         <div class="form-group mt-3 col-md-3">
             <label for="learn" class="mb-2"> Learning Type </label>
-            <input type="text" formControlName="learning_Type" class="form-control" id="learn"
-                placeholder="Learning Type">
+                <select class="form-select" aria-label="Default select example" formControlName="learning_Type">
+                    <option selected>Open this select menu</option>
+                    <option value="Live">Live</option>
+                    <option value="Classroom">Classroom</option>
+                  </select>
         </div>
     </div>
 
     <div class="row">
         <div class="form-group mt-3 col-md-3">
             <label for="certification" class="mb-2">Certification Type</label>
-            <input type="text" formControlName="certification_Type" class="form-control" id="certification"
-                placeholder="Enter Certification Type">
+                <select class="form-select" aria-label="Default select example" formControlName="certification_Type">
+                    <option selected>Open this select menu</option>
+                    <option value="Online">Online</option>
+                    <option value="Offline">Offline</option>
+                  </select>
         </div>
     </div>
 

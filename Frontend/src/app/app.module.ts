@@ -30,6 +30,8 @@ import { SkillModuleComponent } from './skill-module/skill-module.component';
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
+import { AssignBatchComponent } from './assign-batch/assign-batch.component';
+
 
 
 
@@ -54,7 +56,7 @@ import { FacultyDataComponent } from './faculty-data/faculty-data.component';
     ErrorMessageComponent,
     AddAdminComponent,
     FacultyDataComponent,
-
+    AssignBatchComponent,
   ],
   imports: [
     BrowserModule,

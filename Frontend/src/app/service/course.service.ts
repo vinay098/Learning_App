@@ -21,5 +21,20 @@ export class CourseService {
     return this.http.get<Course[]>(this.courseUrl);
   }
 
+  deleteCourse(id:number)
+  {
+    return this.http.delete(this.courseUrl+"delete-course/"+id);
+  }
+
+  getCourseById(id)
+  {
+    return this.http.get<Course>(this.courseUrl+"get-by-id/"+id);
+  }
+
+  updateCourse(id:number,course:any)
+  {
+    this.http.put(this.courseUrl+"update-course-with-image"+id,course);
+  }
+
 
 }

@@ -1,0 +1,57 @@
+<h2 class="container text-center">Assign Batch To Faculty</h2>
+<form [formGroup]="assignForm" (ngSubmit)="submit()">
+    <div class="row">
+        <div class="form-group mt-3 col-md-3">
+            <label class="mb-2">Batch Name</label>
+            <select class="form-select" formControlName="batchID">
+                <option selected>Open this select menu</option>
+                <option *ngFor="let val of batch" value="{{val.id}}">{{val.name}}</option>
+            </select>
+        </div>
+        <div class="form-group mt-3 col-md-3">
+            <label class="mb-2">Faculty Name</label>
+            <select class="form-select" formControlName="faculty_id">
+                <option selected>Open this select menu</option>
+                <option *ngFor="let val of members" value="{{val.userId}}">{{val.userName}}</option>
+            </select>
+        </div>
+        
+        <div class="row  d-flex">
+            <div class="form-group mt-3 col-md-3 align-items-end">
+                <button type="submit" class="btn btn-primary mt-3">Map Value</button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-5 my-5">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col" class="text-center">Batch Id</th>
+                <th scope="col" class="text-center">Batch Name</th>
+                <th scope="col" class="text-center">Capacity</th>
+                <th scope="col" class="text-center">Technology</th>
+                <th scope="col" class="text-center">Batch Start</th>
+                <th scope="col" class="text-center">Batch End</th>
+                <th scope="col" class="text-center">Faculty Name</th>
+                <th scope="col" class="text-center">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let val of assignedBatches">
+                <td class="text-center">{{val.batch_Id}}</td>
+                <td class="text-center">{{val.batch_Name}}</td>
+                <td class="text-center">{{val.capacity}}</td>
+                <td class="text-center">{{val.technology}}</td>
+                <td class="text-center">{{val.startDate| date }}</td>
+                <td class="text-center">{{val.endDate| date}}</td>
+                <td class="text-center">{{val.faculty}}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger">Delete assigned</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

@@ -17,6 +17,7 @@ import { UpdateRoleComponent } from './update-role/update-role.component';
 import { SkillModuleComponent } from './skill-module/skill-module.component';
 import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
+import { AssignBatchComponent } from './assign-batch/assign-batch.component';
 
 
 const routes: Routes = [
@@ -37,13 +38,14 @@ const routes: Routes = [
       { path: "sm-map", component: SkillModuleComponent },
       { path: "add-admin", component: AddAdminComponent },
       { path: 'course', component: CourseComponent },
-      {path:"my-courses",component:FacultyDataComponent}
+      { path: "my-courses", component: FacultyDataComponent },
+      { path: 'course/:id', component: CourseComponent },
+      { path: 'assign-batch', component: AssignBatchComponent },
     ]
   },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: 'employee', component: EmployeeComponent, canActivate: [authGuard] },
-
 
 ];
 

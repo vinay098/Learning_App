@@ -11,9 +11,7 @@
                 <th scope="col" class="text-center">First Name</th>
                 <th scope="col" class="text-center">Last Name</th>
                 <th scope="col" class="text-center">User Name</th>
-                <th scope="col" class="text-center">Gender</th>
                 <th scope="col" class="text-center">Date Of Birth</th>
-                <th scope="col" class="text-center">Email</th>
                 <th scope="col" class="text-center">Role</th>
                 <th scope="col" class="text-center">Is Approved</th>
                 <th scope="col" class="text-center">Approve</th>
@@ -22,13 +20,11 @@
         </thead>
         <tbody>
             <tr *ngFor="let val of members">
-                <td class="text-center">{{val.userId}}</td>
+                <td class="text-center w-25">{{val.userId  }}</td>
                 <td class="text-center">{{val.firstName}}</td>
                 <td class="text-center">{{val.lastName }}</td>
                 <td class="text-center">{{val.userName }}</td>
-                <td class="text-center">{{val.gender}}</td>
                 <td class="text-center">{{val.dob|date}}</td>
-                <td class="text-center">{{val.email}}</td>
                 <td class="text-center">{{val.roles}}</td>
                 <td class="text-center">{{val.isApproved}}</td>
                 <td class="text-center">

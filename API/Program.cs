@@ -24,9 +24,6 @@ builder.Services.AddDbContext<AppDbContext>(option =>{
     option.UseMySQL(builder.Configuration.GetConnectionString("default"));
 });
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>{
-    options.UseMySQL(builder.Configuration.GetConnectionString("default"));
-});
 
 builder.Services.AddScoped<JWTService>();
 
@@ -95,15 +92,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles(
-    new StaticFileOptions
-    {
-        FileProvider = new PhysicalFileProvider(
-            Path.Combine(builder.Environment.ContentRootPath,"Uploads")
-        ),
-        RequestPath = "/Resources"
-    }
-);
+app.UseStaticFiles();
 app.UseCors(option=>option
 .AllowAnyOrigin()
 .AllowAnyMethod()

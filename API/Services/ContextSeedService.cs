@@ -57,7 +57,7 @@ namespace API.Services
                 };
 
                 await _userManager.CreateAsync(admin,"Admin@123");
-                await _userManager.AddToRolesAsync(admin,new[] {SD.AdminRole,SD.FacultyRole,SD.EmployeeRole});
+                await _userManager.AddToRoleAsync(admin,SD.AdminRole);
                 await _userManager.AddClaimsAsync(admin,new Claim[] {
                     new Claim(ClaimTypes.Email,admin.Email),
                     new Claim(ClaimTypes.Surname,admin.LastName)
