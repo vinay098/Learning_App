@@ -31,6 +31,7 @@ import { ErrorMessageComponent } from './error-message/error-message.component';
 import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
 import { AssignBatchComponent } from './assign-batch/assign-batch.component';
+import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
 
 
 
@@ -57,6 +58,7 @@ import { AssignBatchComponent } from './assign-batch/assign-batch.component';
     AddAdminComponent,
     FacultyDataComponent,
     AssignBatchComponent,
+    BatchToBuyComponent,
   ],
   imports: [
     BrowserModule,

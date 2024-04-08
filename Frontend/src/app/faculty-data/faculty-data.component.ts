@@ -4,6 +4,8 @@ import { CourseService } from '../service/course.service';
 import { ToastrService } from 'ngx-toastr';
 import { error } from 'console';
 import { Router } from '@angular/router';
+import { BatchService } from '../service/batch.service';
+import { FacultyData } from '../interface/faculty-data';
 
 @Component({
   selector: 'app-faculty-data',
@@ -12,46 +14,23 @@ import { Router } from '@angular/router';
 })
 export class FacultyDataComponent implements OnInit{
 
-  course: Course[];
-  constructor(private courseService:CourseService
+  facultyData: FacultyData[];
+  constructor(private courseService:CourseService,private batchService:BatchService
     ,private toastr:ToastrService,private router:Router){}
 
   ngOnInit(): void {
-    this.getCourses();
+    this.getFacultyData();
   }
   
-  getCourses() {
-    this.courseService.getCourse().subscribe({
-      next: (res) => {
-        this.course = res;
-        // console.log(this.course);
-      },
-      error: (err) => {
-        console.log(err);
-      }
-    }
-    )
-  }
-
-  deleteCourse(id:number)
-  {
-    this.courseService.deleteCourse(id).subscribe({
+  getFacultyData() {
+    this.batchService.getFacultyData().subscribe({
       next:(res)=>
       {
-        this.toastr.warning("Course Deleted Successfully");
-        this.getCourses();
-      },
-      error:(err)=>
-      {
-        console.log(err);
+        this.facultyData= res;
       }
     })
   }
 
-  edit(id:number)
-  {
-    this.router.navigateByUrl("/home/course/"+id);
-  }
 
 
   

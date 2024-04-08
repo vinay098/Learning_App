@@ -17,17 +17,17 @@ namespace API.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<BatchFaculty>().HasKey(cs=>new{cs.FacultyId,cs.BatchId});
+            modelBuilder.Entity<BatchFaculty>().HasKey(bf=>new{bf.UserId,bf.BatchId});
 
             modelBuilder.Entity<BatchFaculty>()
-            .HasOne(cs=>cs.User)
-            .WithMany(cs=>cs.BatchFaculties)
-            .HasForeignKey(cs=>cs.FacultyId);
+            .HasOne(bf=>bf.User)
+            .WithMany(bf=>bf.BatchFaculties)
+            .HasForeignKey(bf=>bf.UserId);
 
             modelBuilder.Entity<BatchFaculty>()
-            .HasOne(cs=>cs.Batch)
-            .WithMany(cs=>cs.BatchFaculties)
-            .HasForeignKey(cs=>cs.BatchId);
+            .HasOne(bf=>bf.Batch)
+            .WithMany(bf=>bf.BatchFaculties)
+            .HasForeignKey(bf=>bf.BatchId);
 
             modelBuilder.Entity<BatchModule>().HasKey(bm=>new{bm.BatchId,bm.ModuleId});
 

@@ -15,6 +15,6 @@ namespace API.Models
         public Batch Batch {get;set;}
         public ICollection<CourseSkills> CourseSkills {get;set;}
         public string UserId {get;set;}
-        public ICollection<User> Users{get;set;}
+        public User Users{get;set;}
     }
 }

@@ -25,7 +25,7 @@ namespace API.Controllers
             string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             try
             {
-                var res = await _batchrepo.AddBatchAsync(user_Id,obj);
+                var res = await _batchrepo.AddBatchAsync(user_Id, obj);
                 return Ok(res);
             }
             catch (Exception e)
@@ -34,7 +34,7 @@ namespace API.Controllers
             }
         }
 
-         [HttpGet("batches")]
+        [HttpGet("batches")]
         public async Task<ActionResult> GetBatches()
         {
             try
@@ -63,11 +63,11 @@ namespace API.Controllers
         }
 
         [HttpPut("update-batch/{id}")]
-        public async Task<ActionResult> UpdateBatch(int id,BatchDto batch)
+        public async Task<ActionResult> UpdateBatch(int id, BatchDto batch)
         {
             try
             {
-                await _batchrepo.UpdateBatchAsync(id,batch);
+                await _batchrepo.UpdateBatchAsync(id, batch);
                 return Ok();
             }
             catch (Exception e)
@@ -82,30 +82,16 @@ namespace API.Controllers
             try
             {
                 var batch = await _batchrepo.GetBatchByIdAsync(id);
-                if(batch == null)
+                if (batch == null)
                 {
                     return NotFound(new
                     {
-                        status=404,
+                        status = 404,
                         message = "batch not found"
                     });
                 }
                 await _batchrepo.DeleteBatchAsync(batch);
                 return Ok(batch);
-            }
-            catch (Exception e)
-            {
-                return Problem(e.Message);
-            }
-        }
-
-        [HttpPut("assign-batch")]
-        public async Task<ActionResult> AssignBatch(AssignBatch obj)
-        {
-            try
-            {
-                await _batchrepo.AssignBatch(obj);
-                return Ok();
             }
             catch (Exception e)
             {
@@ -119,6 +105,35 @@ namespace API.Controllers
             try
             {
                 var response = await _batchrepo.GetAssignedBatch();
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("get-data-for-facylty")]
+        public async Task<ActionResult> GetDataForDaculty()
+        {
+            string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var response = await _batchrepo.FacultyDataByID(user_Id);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("batch-to-enroll")]
+        public async Task<ActionResult> BatchToEnroll()
+        {
+            try
+            {
+                var response = await _batchrepo.GetEmployeeData();
                 return Ok(response);
             }
             catch (Exception e)

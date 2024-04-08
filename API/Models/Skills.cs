@@ -15,7 +15,7 @@ namespace API.Models
         public string Skill_Name {get; set; }
         public string Skill_Family {get; set; }
         public string UserId {get; set; }
-        public ICollection<User> User {get; set; }
+        public User User {get; set; }
         public ICollection<SkillModule> SkillModules {get; set; }
         public ICollection<CourseSkills> CourseSkills {get;set;}
        

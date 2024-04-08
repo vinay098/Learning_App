@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SkillsService } from '../service/skills.service';
-import { Skill } from '../interface/skill';
-import { error, log } from 'console';
 import { AuthServiceService } from '../service/auth-service.service';
 import { ShowSkills } from '../interface/show-skills';
 import { ToastrService } from 'ngx-toastr';
@@ -47,8 +45,8 @@ export class SkillsComponent implements OnInit {
 
    
     this.skillForm = this.formBuilder.group({
-      Name: [null],
-      Family:[null],
+      name: [null],
+      family:[null],
     });
   }
 
@@ -70,7 +68,7 @@ export class SkillsComponent implements OnInit {
         next:(res)=>{
           // alert("updated");
           this.toastr.success("Updated Successfully");
-          this.router.navigateByUrl("/home/skills");
+          this.getSkills();
           this.skillForm.reset();
         },
         error:(err)=>{
@@ -79,12 +77,14 @@ export class SkillsComponent implements OnInit {
       })
     }
     else{
+      // debugger
       this.skillService.addSkill(this.skillForm.value).subscribe({
         next:(res:any)=>{
           // alert("Skills added successfully");
           this.toastr.success("Skills added successfully")
-          this.skills.push(res);
-          this.router.navigateByUrl("/home/skills");
+          console.log(res);
+          // this.skills.push(res);
+          this.getSkills();
           this.skillForm.reset();
         },
         error:(err)=>{

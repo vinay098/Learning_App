@@ -221,11 +221,33 @@ namespace API.Controllers
             {
                 var ob = new BatchFaculty();
                 ob.BatchId = obj.BatchID;
-                ob.FacultyId = obj.Faculty_id;
+                ob.UserId = obj.Faculty_id;
                 _context.Add(ob);
                 await _context.SaveChangesAsync();
-                var ans = _context.BatchFaculties.Include(b => b.User.UserName);
-                var res = await _context.SkillModules.ToListAsync();
+                var res = await _context.BatchFaculties.ToListAsync();
+                return Ok(res);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPost("buy-batch")]
+        public async Task<ActionResult> BuyBatch(BuyBatch obj)
+        {
+            string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var ob = new BatchFaculty();
+                ob.BatchId = obj.BatchId;
+                ob.UserId = user_Id;
+                _context.Add(ob);
+                await _context.SaveChangesAsync();
+                var batch =  await _context.Batches.FirstAsync(x=>x.Id==obj.BatchId);
+                batch.Capacity -=1;
+                await _context.SaveChangesAsync(); 
+                
                 return Ok();
             }
             catch (Exception e)
@@ -234,7 +256,124 @@ namespace API.Controllers
             }
         }
 
+        [HttpGet("get-batch-module/{id}")]
+        public async Task<ActionResult> GetBatchModuleById(int id)
+        {
+            try
+            {
+                var ModuleIds = await _context.BatchModules.Where(b => b.BatchId == id)
+                            .Select(b => b.ModuleId).ToListAsync();
 
+                return Ok(ModuleIds);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpPut("update-Batch-Module/{id}")]
+        public async Task<ActionResult> UpdateBatchModule(int id, MapBatchModule obj)
+        {
+            string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                // 1. Find the Batch
+                var batch = await _context.Batches.FindAsync(id);
+
+                if (batch == null)
+                {
+                    return NotFound("Batch not found.");
+                }
+
+                // 2. Retrieve Existing Associations (assuming junction table is BatchModule)
+                var existingAssociations = await _context.BatchModules
+                    .Where(bm => bm.BatchId == id)
+                    .ToListAsync();
+
+                // 3. Compare and Update
+                var modulesToAdd = obj.Module_Id.Except(existingAssociations.Select(a => a.ModuleId));
+                var modulesToRemove = existingAssociations.Where(a => !obj.Module_Id.Contains(a.ModuleId));
+
+                // Add new module associations
+                foreach (var moduleId in modulesToAdd)
+                {
+                    _context.BatchModules.Add(new BatchModule { BatchId = id, ModuleId = moduleId, UserId = user_Id });
+                }
+
+                // Remove unwanted associations
+                _context.BatchModules.RemoveRange(modulesToRemove);
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+         [HttpGet("get-skill-module/{id}")]
+        public async Task<ActionResult> GetSkillModuleById(int id)
+        {
+            try
+            {
+                var skillIds = await _context.SkillModules.Where(b => b.ModuleId == id)
+                            .Select(b => b.SkillId).ToListAsync();
+
+                return Ok(skillIds);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+
+        [HttpPut("update-skill-Module/{id}")]
+        public async Task<ActionResult> UpdateSkillModule(int id, MapSkillModule obj)
+        {
+            string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                // 1. Find the Module
+                var module = await _context.Modules.FindAsync(id);
+
+                if (module == null)
+                {
+                    return NotFound("Module not found.");
+                }
+
+                // 2. Retrieve Existing Associations (assuming junction table is SKillModule)
+                var existingAssociations = await _context.SkillModules
+                    .Where(bm => bm.ModuleId == id)
+                    .ToListAsync();
+
+                // 3. Compare and Update
+                var SkillToAdd = obj.SkillId.Except(existingAssociations.Select(a => a.SkillId));
+                var SkillToRemove = existingAssociations.Where(a => !obj.SkillId.Contains(a.SkillId));
+
+                // Add new module associations
+                foreach (var SkillId in SkillToAdd)
+                {
+                    _context.SkillModules.Add(new SkillModule { ModuleId = id, SkillId = SkillId, UserId = user_Id });
+                }
+
+                // Remove unwanted associations
+                _context.SkillModules.RemoveRange(SkillToRemove);
+
+                // Save changes to the database
+                await _context.SaveChangesAsync();
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
 
 
     }

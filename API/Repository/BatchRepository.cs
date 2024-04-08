@@ -93,13 +93,6 @@ namespace API.Repository
             return batch;
         }
 
-        public async Task AssignBatch(AssignBatch obj)
-        {
-            var batch = await GetBatchByIdAsync(obj.BatchID);
-            batch.FacultyId = obj.Faculty_id;
-            await _context.SaveChangesAsync();
-        }
-
         public async Task<List<AssignBatchDisplay>> GetAssignedBatch()
         {
             var batches = await _context.Batches.ToListAsync();
@@ -115,14 +108,14 @@ namespace API.Repository
                 dto.EndDate = val.EndDate.ToString();
                 dto.Capacity = val.Capacity;
                 dto.Technology = val.Technology;
-                if (val.FacultyId != null)
+                var FacultyId = await _context.BatchFaculties
+                                 .Where(b => b.BatchId == val.Id)
+                                 .Select(b => b.UserId).ToListAsync();
+                foreach (var id in FacultyId)
                 {
-                    var user = await _userManager.FindByIdAsync(val.FacultyId);
-                    dto.Faculty = await _userManager.GetUserNameAsync(user);
-                }
-                else
-                {
-                    dto.Faculty = "";
+                    var user = await _userManager.FindByIdAsync(id);
+                    var name = await _userManager.GetUserNameAsync(user);
+                    dto.Faculty.Add(name);
                 }
 
                 res.Add(dto);
@@ -132,6 +125,64 @@ namespace API.Repository
 
         }
 
-        
+        public async Task<List<FacultyData>> FacultyDataByID(string id)
+        {
+            var Batch_Id = await _context.BatchFaculties
+                            .Where(b => b.UserId == id)
+                            .Select(b => new
+                            {
+                                b.Batch.Id,
+                                b.Batch.BatchName,
+                                b.Batch.StartDate,
+                                b.Batch.EndDate,
+                                b.Batch.Capacity,
+                                b.Batch.Technology,
+                            }).ToListAsync();
+
+            var res = new List<FacultyData>();
+            foreach (var val in Batch_Id)
+            {
+                var dto = new FacultyData();
+                dto.Batch_Id = val.Id;
+                dto.Batch_Name = val.BatchName;
+                dto.Start = val.StartDate.ToString();
+                dto.End = val.EndDate.ToString();
+                dto.Capacity = val.Capacity;
+                dto.Technology = val.Technology;
+                res.Add(dto);
+            }
+
+            return res;
+        }
+
+        public async Task<List<EmployeeData>> GetEmployeeData()
+        {
+             var batches = await _context.Batches.ToListAsync();
+             var res = new List<EmployeeData>();
+             foreach(var val in batches)
+             {
+                var dto = new EmployeeData();
+                dto.BatchId = val.Id;
+                dto.BatchName = val.BatchName;
+                dto.Start = val.StartDate.ToString();
+                dto.End = val.EndDate.ToString();
+                dto.Capacity = val.Capacity;
+                dto.Technology = val.Technology;
+                var module = await _context.BatchModules
+                .Where(x=>x.BatchId==val.Id)
+                .Select(x=>x.ModuleId)
+                .ToListAsync();
+                
+                foreach(var id in module)
+                {
+                    var ans = await _context.Modules.FirstOrDefaultAsync(x=>x.Id==id);
+                    dto.ModuleName.Add(ans.Module_Name);
+                    dto.ModuleLevel.Add(ans.Proefficiency_level);
+                }
+                res.Add(dto);
+             }
+
+             return res;
+        }
     }
 }

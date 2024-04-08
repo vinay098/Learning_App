@@ -17,6 +17,7 @@
           "Microsoft.EntityFrameworkCore.Tools": "7.0.11",
           "Microsoft.IdentityModel.Tokens": "7.3.1",
           "MySql.EntityFrameworkCore": "7.0.5",
+          "Portable.BouncyCastle": "1.9.0",
           "Swashbuckle.AspNetCore": "6.5.0",
           "System.IdentityModel.Tokens.Jwt": "7.3.1"
         },

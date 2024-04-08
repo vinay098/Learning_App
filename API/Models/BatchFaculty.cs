@@ -7,9 +7,10 @@ namespace API.Models
 {
     public class BatchFaculty
     {
-        public string FacultyId {get;set;}
+        public string UserId {get;set;}
         public User User {get;set;}
         public int BatchId {get;set;}
         public Batch Batch {get;set;}
+        
     }
 }

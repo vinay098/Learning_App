@@ -13,6 +13,6 @@ namespace API.Models
         public int ModuleId {get; set; }
         public LearnModule Module { get; set; }
         public string UserId { get; set; }
-        public ICollection<User> Users { get; set;}
+        public User Users { get; set;}
     }
 }

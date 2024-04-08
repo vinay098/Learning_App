@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj": {}
+    "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj": {}
   },
   "projects": {
-    "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj": {
+    "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj",
+        "projectUniqueName": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj",
         "projectName": "API",
-        "projectPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\API.csproj",
+        "projectPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\API.csproj",
         "packagesPath": "C:\\Users\\E.Vinay\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\Api\\obj\\",
+        "outputPath": "C:\\Users\\E.Vinay\\Desktop\\POC\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\E.Vinay\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -78,6 +78,10 @@
             "MySql.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.5, )"
+            },
+            "Portable.BouncyCastle": {
+              "target": "Package",
+              "version": "[1.9.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",

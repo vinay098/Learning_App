@@ -13,7 +13,7 @@ namespace API.Models
         public string Learning_Type { get; set; }
         public string Certification_Type { get; set; }
         public string UserId {get; set; }
-        public ICollection<User> Users { get; set; }
+        public User Users { get; set; }
         public ICollection<SkillModule> SkillModules { get; set; }
         public ICollection<BatchModule> BatchModules { get; set; }
     }

@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 import { Batch } from '../interface/batch';
 import { AssignBatch } from '../interface/assign-batch';
 import { GetAssignedBatch } from '../interface/get-assigned-batch';
+import { FacultyData } from '../interface/faculty-data';
+import { BatchToBuy } from '../interface/batch-to-buy';
 
 @Injectable({
   providedIn: 'root'
@@ -33,14 +35,19 @@ export class BatchService {
     return this.http.delete(this.batchUrl+"delete-batch/"+id);
   }
 
-  assignBatch(assign:AssignBatch)
-  {
-    return this.http.put(this.batchUrl+"assign-batch",assign);
-  }
-
   getAssignedBatch()
   {
     return this.http.get<GetAssignedBatch[]>(this.batchUrl+"get-assigned-batch");
+  }
+
+  getFacultyData()
+  {
+    return this.http.get<FacultyData[]>(this.batchUrl+"get-data-for-facylty")
+  }
+
+  BatchToBuy()
+  {
+    return this.http.get<BatchToBuy[]>(this.batchUrl+"batch-to-enroll");
   }
 }
 

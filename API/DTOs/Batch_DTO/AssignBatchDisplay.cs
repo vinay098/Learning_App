@@ -13,6 +13,6 @@ namespace API.DTOs.Batch_DTO
         public string EndDate {get;set;}
         public int Capacity {get;set;}
         public string Technology {get;set;}
-        public string Faculty {get;set;}
+        public List<string> Faculty {get;set;} = new List<string>();
     }
 }

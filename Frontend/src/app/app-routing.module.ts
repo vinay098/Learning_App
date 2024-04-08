@@ -18,6 +18,7 @@ import { SkillModuleComponent } from './skill-module/skill-module.component';
 import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
 import { AssignBatchComponent } from './assign-batch/assign-batch.component';
+import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
 
 
 const routes: Routes = [
@@ -33,19 +34,22 @@ const routes: Routes = [
       { path: 'module', component: LearnModuleComponent },
       { path: 'module/:id', component: LearnModuleComponent },
       { path: "batch-module", component: BatchModuleMapComponent },
+      { path: "batch-module/:id", component: BatchModuleMapComponent },
       { path: 'approve-disapprove', component: ViewMembersComponent },
       { path: "update-role", component: UpdateRoleComponent },
       { path: "sm-map", component: SkillModuleComponent },
+      { path: "sm-map/:id", component: SkillModuleComponent },
       { path: "add-admin", component: AddAdminComponent },
       { path: 'course', component: CourseComponent },
       { path: "my-courses", component: FacultyDataComponent },
       { path: 'course/:id', component: CourseComponent },
       { path: 'assign-batch', component: AssignBatchComponent },
+      { path: 'batch-to-buy', component: BatchToBuyComponent },
+      // { path: 'enrolled-batch', component: EnrolledBatchComponent },
     ]
   },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'employee', component: EmployeeComponent, canActivate: [authGuard] },
 
 ];
 

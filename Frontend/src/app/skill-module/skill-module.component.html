@@ -1,4 +1,4 @@
-<h2 class="container text-center">Skill Module </h2>
+<h2 class="container text-center">Skill Module Map</h2>
 <form [formGroup]="smForm" (ngSubmit)="submit()">
     <div class="row">
         <div class="form-group mt-3 col-md-3">
@@ -21,8 +21,18 @@
         </div>
         
         <div class="row  d-flex">
+            @if (isEdit) {
+                <div class="form-group mt-3 col-md-3 align-items-end">
+                    <button type="submit" class="btn btn-primary mt-3">Update</button>
+                </div>
+            }
+            @else {
+                <div class="form-group mt-3 col-md-3 align-items-end">
+                    <button type="submit" class="btn btn-primary mt-3">Map Values</button>
+                </div>
+            }
             <div class="form-group mt-3 col-md-3 align-items-end">
-                <button type="submit" class="btn btn-primary mt-3">Map Value</button>
+                <button type="button" (click)="resetPage()" class="btn btn-primary mt-3">Reset Page</button>
             </div>
         </div>
     </div>
@@ -51,6 +61,7 @@
                 <td class="text-center">{{val.skillName}}</td>
                 <td class="text-center">
                     <button (click)="deleteMapped(val.moduleId)" class="btn btn-danger">Delete Mapped</button>
+                    <button type="button" (click)="updateVal(val.moduleId)" class="btn btn-primary mt-2">Update Mapped</button>
                 </td>
             </tr>
 

@@ -12,6 +12,10 @@ namespace API.Models
         public string LastName { get; set; }
         public string Gender { get; set; }
         public DateTime Dob {get; set ;} 
+        public ICollection<Batch> Batches {get;set;}
+        public ICollection<Skills> Skills {get;set;}
+        public ICollection<LearnModule> Modules {get;set;}
+        public ICollection<Course> Courses {get;set;}
         public ICollection<BatchFaculty> BatchFaculties {get;set;}       
     }
 }

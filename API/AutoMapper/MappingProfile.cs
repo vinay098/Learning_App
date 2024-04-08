@@ -33,6 +33,16 @@ namespace API.AutoMapper
             CreateMap<Skills,SkillDto>()
             .ForMember(dest=>dest.Name,m=>m.MapFrom(src=>src.Skill_Name))
             .ForMember(dest=>dest.Family,m=>m.MapFrom(src=>src.Skill_Family));
+
+            CreateMap<BatchFaculty,FacultyData>()
+            .ForMember(dest=>dest.Batch_Id,m=>m.MapFrom(src=>src.BatchId))
+            .ForMember(dest=>dest.Batch_Name,m=>m.MapFrom(src=>src.Batch.BatchName))
+            .ForMember(dest=>dest.Capacity,m=>m.MapFrom(src=>src.Batch.Capacity))
+            .ForMember(dest=>dest.Start,m=>m.MapFrom(src=>src.Batch.StartDate.ToString()))
+            .ForMember(dest=>dest.End,m=>m.MapFrom(src=>src.Batch.EndDate.ToString()))
+            .ForMember(dest=>dest.Technology,m=>m.MapFrom(src=>src.Batch.Technology));
+
+            
         }
     }
 }

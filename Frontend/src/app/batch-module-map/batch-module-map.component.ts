@@ -5,7 +5,7 @@ import { Batch } from '../interface/batch';
 import { Module } from '../interface/module';
 import { MapperService } from '../service/mapper.service';
 import { BatchService } from '../service/batch.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ModuleService } from '../service/module.service';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
@@ -26,13 +26,40 @@ export class BatchModuleMapComponent implements OnInit {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+  isEdit:boolean = false;
+  batchId:number;
 
 
   constructor(private mapperService: MapperService, private batchService: BatchService,
     private router: Router, private toastr: ToastrService, private moduleService: ModuleService,
-    private formBuilder: FormBuilder) { }
+    private formBuilder: FormBuilder,private route:ActivatedRoute) { }
 
   ngOnInit(): void {
+
+    this.batchId = this.route.snapshot.params["id"];
+    if(this.batchId)
+    {
+      this.selectedItems=[];
+      this.isEdit=true;
+      this.mapperService.getBatchModuleById(this.batchId).subscribe({
+        next:(res)=>{
+          console.log(res);
+          
+          this.batchModuleForm.patchValue({
+            batchName:this.batchId,
+            moduleName:res
+          });
+          // this.selectedItems=res;
+          this.selectedItems = res.map((item) => ({
+            id: item, // Adjust property name based on your data structure
+            // text: item.moduleName // Adjust property name based on your data structure
+          }));
+        }
+      })
+      
+    }
+    console.log(this.selectedItems);
+    
 
     this.getBatch();
     this.getModule();
@@ -48,8 +75,6 @@ export class BatchModuleMapComponent implements OnInit {
       singleSelection: false,
       idField: 'id',
       textField: 'name',
-      // selectAllText: 'Select All',
-      // unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true,
       enableCheckAll: false,
@@ -98,21 +123,50 @@ export class BatchModuleMapComponent implements OnInit {
   }
 
   submit() {
-    const formData = {
-      Batch_Id : this.batchModuleForm.get('batchName').value,
-      Module_Id : this.selectedItems.map(x=>x.id)
-    }
-    this.mapperService.addSkillModule(formData).subscribe({
-      next: (res) => {
-        this.toastr.success("value Added Successfuly");
-        this.selectedItems=[];
-        this.batchModuleForm.reset();
-        this.getBatchModuleMapvalues();
-      },
-      error:(err)=>{
-        console.log(err);
+
+    
+    if(this.isEdit)
+    {
+      const formData = {
+        Module_Id : this.selectedItems.map(x=>x.id)
       }
-    })
+      console.log(formData);
+      this.mapperService.updateBatchModule(this.batchId,formData).subscribe({
+        next:(res)=>{
+          this.toastr.success("value Updated Successfuly");
+          this.selectedItems=[];
+          this.batchModuleForm.reset();
+          this.getBatchModuleMapvalues();
+        },
+        error:(err)=>
+        {
+          console.log(err);
+        }
+      })
+      
+    }
+    else
+    {
+      const formData = {
+        Batch_Id : this.batchModuleForm.get('batchName').value,
+        Module_Id : this.selectedItems.map(x=>x.id)
+      }
+      console.log(formData);
+      this.mapperService.addSkillModule(formData).subscribe({
+        next: (res) => {
+          this.toastr.success("value Added Successfuly");
+          this.selectedItems=[];
+          this.batchModuleForm.reset();
+          this.getBatchModuleMapvalues();
+        },
+        error:(err)=>{
+          console.log(err);
+        }
+      })
+
+    }
+   
+    
   }
 
   onItemSelect(item: any) {
@@ -136,6 +190,16 @@ export class BatchModuleMapComponent implements OnInit {
         console.log(err);
       }
     })
+  }
+
+  updateVal(id:number)
+  {
+    this.router.navigateByUrl("/home/batch-module/"+id);
+  }
+
+  resetPage()
+  {
+    this.router.navigateByUrl("/home/batch-module");
   }
 
 }

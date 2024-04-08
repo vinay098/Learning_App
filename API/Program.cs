@@ -3,6 +3,7 @@ using API.Context;
 using API.Interface;
 using API.Models;
 using API.Repository;
+using API.RSA;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddXmlDataContractSerializerFormatters();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -26,13 +27,13 @@ builder.Services.AddDbContext<AppDbContext>(option =>{
 
 
 builder.Services.AddScoped<JWTService>();
-
 builder.Services.AddScoped<ContextSeedService>();
 builder.Services.AddScoped<ISkills,SkillsRepository>();
 builder.Services.AddScoped<IModule,ModuleRepository>();
 builder.Services.AddScoped<IBatch,BatchRepository>();
 builder.Services.AddScoped<ICourse,CourseService>();
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
+builder.Services.AddScoped<IRsaHelper,RsaHelper>();
 
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

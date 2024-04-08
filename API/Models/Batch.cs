@@ -14,8 +14,7 @@ namespace API.Models
         public int Capacity { get; set; }
         public  string Technology { get; set;}
         public string UserId { get; set; }
-        public ICollection<User> Users { get; set; }
-        public string FacultyId {get;set;}
+        public User Users { get; set; }
         public ICollection<BatchModule> BatchModules { get; set; }
         public ICollection<BatchFaculty> BatchFaculties {get;set;}
         

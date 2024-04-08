@@ -5,7 +5,7 @@ import { ShowSkills } from '../interface/show-skills';
 import { Module } from '../interface/module';
 import { MapperService } from '../service/mapper.service';
 import { SkillsService } from '../service/skills.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleService } from '../service/module.service';
 import { ToastrService } from 'ngx-toastr';
 
@@ -23,12 +23,36 @@ export class SkillModuleComponent {
   dropdownList = [];
   selectedItems = [];
   dropdownSettings = {};
+  isEdit: boolean = false;
+  moduleId: number;
 
   constructor(private mapperService: MapperService, private skillService: SkillsService,
     private router: Router, private moduleService: ModuleService,
-    private formBuilder: FormBuilder, private toastr: ToastrService) { }
+    private formBuilder: FormBuilder, private toastr: ToastrService, private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.moduleId = this.route.snapshot.params["id"];
+    if (this.moduleId) {
+      this.selectedItems = [];
+      this.isEdit = true;
+      this.mapperService.getSKillModuleById(this.moduleId).subscribe({
+        next: (res) => {
+          console.log(res);
+
+          this.smForm.patchValue({
+            moduleName: this.moduleId,
+            skillName: res
+          });
+          // this.selectedItems=res;
+          this.selectedItems = res.map((item) => ({
+            id: item, // Adjust property name based on your data structure
+            // text: item.moduleName // Adjust property name based on your data structure
+          }));
+        }
+      })
+
+    }
     this.getSkillModule();
     this.getSkill();
     this.getModule();
@@ -45,6 +69,7 @@ export class SkillModuleComponent {
       unSelectAllText: 'UnSelect All',
       itemsShowLimit: 3,
       allowSearchFilter: true,
+      enableCheckAll: false,
     };
   }
 
@@ -83,27 +108,45 @@ export class SkillModuleComponent {
     })
   }
 
-  submit()
-  {
-    const formvalues = 
-    {
-      ModuleId : this.smForm.get('moduleName').value,
-      SkillId : this.selectedItems.map(x=>x.id)
+  submit() {
+    if (this.isEdit) {
+      const formvalues =
+      {
+        SkillId: this.selectedItems.map(x => x.id)
+      }
+      console.log(formvalues);
+      this.mapperService.updateSkillModule(this.moduleId, formvalues).subscribe({
+        next: (res) => {
+          this.toastr.success("Mapped Updated Successfully");
+          this.selectedItems = [];
+          this.smForm.reset();
+          this.getSkillModule();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
     }
-    // console.log(formvalues);
-    this.mapperService.addSkillMod(formvalues).subscribe({
-      next:(res)=>
+    else {
+      const formvalues =
       {
-        this.toastr.success("Mapped data Successfully");
-        this.selectedItems=[];
-        this.smForm.reset();
-        this.getSkillModule();
-      },
-      error:(err)=>
-      {
-        console.log(err);
-      } 
-    })
+        ModuleId: this.smForm.get('moduleName').value,
+        SkillId: this.selectedItems.map(x => x.id)
+      }
+      // console.log(formvalues);
+      this.mapperService.addSkillMod(formvalues).subscribe({
+        next: (res) => {
+          this.toastr.success("Mapped data Successfully");
+          this.selectedItems = [];
+          this.smForm.reset();
+          this.getSkillModule();
+        },
+        error: (err) => {
+          console.log(err);
+        }
+      })
+    }
+
   }
 
   onItemSelect(item: any) {
@@ -112,20 +155,27 @@ export class SkillModuleComponent {
 
   onItemDeSelect(item: any) {
     this.selectedItems = this.selectedItems
-    .filter(selectedItem => selectedItem.id !== item.id);
+      .filter(selectedItem => selectedItem.id !== item.id);
     console.log(this.selectedItems);
   }
 
-  deleteMapped(id:number)
-  {
+  deleteMapped(id: number) {
     this.mapperService.deleteSkillModule(id).subscribe({
-      next:(res)=>{
+      next: (res) => {
         this.getSkillModule();
         this.toastr.success("Mapped Data Deleted");
       },
-      error:(err)=>{
+      error: (err) => {
         console.log(err);
       }
     })
+  }
+
+  updateVal(id: number) {
+    this.router.navigateByUrl("/home/sm-map/" + id);
+  }
+
+  resetPage() {
+    this.router.navigateByUrl("/home/sm-map");
   }
 }

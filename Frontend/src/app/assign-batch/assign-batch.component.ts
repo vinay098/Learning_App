@@ -7,6 +7,7 @@ import { ViewMembers } from '../interface/view-members';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import e from 'express';
+import { MapperService } from '../service/mapper.service';
 
 @Component({
   selector: 'app-assign-batch',
@@ -23,7 +24,8 @@ export class AssignBatchComponent implements OnInit {
 
   constructor(private batchService: BatchService,
     private adminService: AdminService,
-    private formBuilder: FormBuilder,private toastr:ToastrService) { }
+    private formBuilder: FormBuilder,private toastr:ToastrService,
+    private mapperService:MapperService) { }
 
   ngOnInit(): void {
     this.getBatch();
@@ -69,13 +71,17 @@ export class AssignBatchComponent implements OnInit {
 
   submit()
   {
-    this.batchService.assignBatch(this.assignForm.value).subscribe({
+    this.mapperService.assignBatch(this.assignForm.value).subscribe({
       next:(res)=>{
         this.toastr.success("Batch is assigned to Faculty");
         this.getAssignedBatch();
         this.assignForm.reset();
       },
-      
+      error:(err)=>
+      {
+        console.log(err);
+        
+      }
     })
   }
 

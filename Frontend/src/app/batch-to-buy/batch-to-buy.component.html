@@ -1,0 +1,35 @@
+<h2 class="text-center mt-2 mb-2">Enroll In Batches</h2>
+<div class="table-wrapper-scroll-y my-custom-scrollbar mt-3">
+    <table class="table table-bordered table-striped mb-0">
+        <thead>
+            <tr class="table-primary">
+                <th scope="col" class="text-center">Id&nbsp;<i class="fa-solid fa-sort"></i>
+                </th>
+                <th scope="col" class="text-center">Name</th>
+                <th scope="col" class="text-center">Start</th>
+                <th scope="col" class="text-center">End</th>
+                <th scope="col" class="text-center">Capacity</th>
+                <th scope="col" class="text-center">Technology</th>
+                <th scope="col" class="text-center">Module Names</th>
+                <th scope="col" class="text-center">Levels</th>
+                <th scope="col" class="text-center">Buy</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let val of EnrollBatch ">
+                <td class="text-center">{{val.batchId}}</td>
+                <td class="text-center">{{val.batchName}}</td>
+                <td class="text-center">{{val.start | date}}</td>
+                <td class="text-center">{{val.end | date}}</td>
+                <td class="text-center">{{val.capacity}}</td>
+                <td class="text-center">{{val.technology}}</td>
+                <td class="text-center">{{val.moduleName}}</td>
+                <td class="text-center">{{val.moduleLevel}}</td>
+                <td class="text-center">
+                    <button type="button" (click)="buyBatch(val.batchId)" class="btn btn-primary">Buy</button>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</div>

@@ -34,9 +34,6 @@ namespace API.Data.IdentityTable
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("FacultyId")
-                        .HasColumnType("longtext");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
@@ -44,22 +41,24 @@ namespace API.Data.IdentityTable
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Batches");
                 });
 
             modelBuilder.Entity("API.Models.BatchFaculty", b =>
                 {
-                    b.Property<string>("FacultyId")
+                    b.Property<string>("UserId")
                         .HasColumnType("varchar(255)");
 
                     b.Property<int>("BatchId")
                         .HasColumnType("int");
 
-                    b.HasKey("FacultyId", "BatchId");
+                    b.HasKey("UserId", "BatchId");
 
                     b.HasIndex("BatchId");
 
@@ -75,11 +74,13 @@ namespace API.Data.IdentityTable
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("BatchId", "ModuleId");
 
                     b.HasIndex("ModuleId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BatchModules");
                 });
@@ -103,11 +104,13 @@ namespace API.Data.IdentityTable
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("BatchId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Courses");
                 });
@@ -146,9 +149,11 @@ namespace API.Data.IdentityTable
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Modules");
                 });
@@ -162,11 +167,13 @@ namespace API.Data.IdentityTable
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("SkillId", "ModuleId");
 
                     b.HasIndex("ModuleId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("SkillModules");
                 });
@@ -184,9 +191,11 @@ namespace API.Data.IdentityTable
                         .HasColumnType("longtext");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("longtext");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Skills");
                 });
@@ -199,21 +208,9 @@ namespace API.Data.IdentityTable
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BatchModuleBatchId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("BatchModuleModuleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("CourseId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("Dob")
                         .HasColumnType("datetime(6)");
@@ -233,9 +230,6 @@ namespace API.Data.IdentityTable
 
                     b.Property<string>("LastName")
                         .HasColumnType("longtext");
-
-                    b.Property<int?>("LearnModuleId")
-                        .HasColumnType("int");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("tinyint(1)");
@@ -263,15 +257,6 @@ namespace API.Data.IdentityTable
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("SkillModuleModuleId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SkillModuleSkillId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("SkillsId")
-                        .HasColumnType("int");
-
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("tinyint(1)");
 
@@ -281,24 +266,12 @@ namespace API.Data.IdentityTable
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BatchId");
-
-                    b.HasIndex("CourseId");
-
-                    b.HasIndex("LearnModuleId");
-
                     b.HasIndex("NormalizedEmail")
                         .HasDatabaseName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
                         .HasDatabaseName("UserNameIndex");
-
-                    b.HasIndex("SkillsId");
-
-                    b.HasIndex("BatchModuleBatchId", "BatchModuleModuleId");
-
-                    b.HasIndex("SkillModuleSkillId", "SkillModuleModuleId");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -431,6 +404,15 @@ namespace API.Data.IdentityTable
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("API.Models.Batch", b =>
+                {
+                    b.HasOne("API.Models.User", "Users")
+                        .WithMany("Batches")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("API.Models.BatchFaculty", b =>
                 {
                     b.HasOne("API.Models.Batch", "Batch")
@@ -441,7 +423,7 @@ namespace API.Data.IdentityTable
 
                     b.HasOne("API.Models.User", "User")
                         .WithMany("BatchFaculties")
-                        .HasForeignKey("FacultyId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -464,9 +446,15 @@ namespace API.Data.IdentityTable
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.User", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Batch");
 
                     b.Navigation("Module");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.Course", b =>
@@ -477,7 +465,13 @@ namespace API.Data.IdentityTable
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.User", "Users")
+                        .WithMany("Courses")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Batch");
+
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.CourseSkills", b =>
@@ -499,6 +493,15 @@ namespace API.Data.IdentityTable
                     b.Navigation("Skills");
                 });
 
+            modelBuilder.Entity("API.Models.LearnModule", b =>
+                {
+                    b.HasOne("API.Models.User", "Users")
+                        .WithMany("Modules")
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Users");
+                });
+
             modelBuilder.Entity("API.Models.SkillModule", b =>
                 {
                     b.HasOne("API.Models.LearnModule", "Module")
@@ -513,36 +516,24 @@ namespace API.Data.IdentityTable
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("API.Models.User", "Users")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Module");
 
                     b.Navigation("Skills");
+
+                    b.Navigation("Users");
                 });
 
-            modelBuilder.Entity("API.Models.User", b =>
+            modelBuilder.Entity("API.Models.Skills", b =>
                 {
-                    b.HasOne("API.Models.Batch", null)
-                        .WithMany("Users")
-                        .HasForeignKey("BatchId");
+                    b.HasOne("API.Models.User", "User")
+                        .WithMany("Skills")
+                        .HasForeignKey("UserId");
 
-                    b.HasOne("API.Models.Course", null)
-                        .WithMany("Users")
-                        .HasForeignKey("CourseId");
-
-                    b.HasOne("API.Models.LearnModule", null)
-                        .WithMany("Users")
-                        .HasForeignKey("LearnModuleId");
-
-                    b.HasOne("API.Models.Skills", null)
-                        .WithMany("User")
-                        .HasForeignKey("SkillsId");
-
-                    b.HasOne("API.Models.BatchModule", null)
-                        .WithMany("Users")
-                        .HasForeignKey("BatchModuleBatchId", "BatchModuleModuleId");
-
-                    b.HasOne("API.Models.SkillModule", null)
-                        .WithMany("Users")
-                        .HasForeignKey("SkillModuleSkillId", "SkillModuleModuleId");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -601,20 +592,11 @@ namespace API.Data.IdentityTable
                     b.Navigation("BatchFaculties");
 
                     b.Navigation("BatchModules");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("API.Models.BatchModule", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.Course", b =>
                 {
                     b.Navigation("CourseSkills");
-
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.LearnModule", b =>
@@ -622,13 +604,6 @@ namespace API.Data.IdentityTable
                     b.Navigation("BatchModules");
 
                     b.Navigation("SkillModules");
-
-                    b.Navigation("Users");
-                });
-
-            modelBuilder.Entity("API.Models.SkillModule", b =>
-                {
-                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("API.Models.Skills", b =>
@@ -636,13 +611,19 @@ namespace API.Data.IdentityTable
                     b.Navigation("CourseSkills");
 
                     b.Navigation("SkillModules");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("API.Models.User", b =>
                 {
                     b.Navigation("BatchFaculties");
+
+                    b.Navigation("Batches");
+
+                    b.Navigation("Courses");
+
+                    b.Navigation("Modules");
+
+                    b.Navigation("Skills");
                 });
 #pragma warning restore 612, 618
         }

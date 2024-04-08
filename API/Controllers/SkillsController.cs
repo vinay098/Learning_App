@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Security.Claims;
-using System.Threading.Tasks;
 using API.DTOs.Skills_DTO;
 using API.Interface;
-using API.Models;
-using Microsoft.AspNetCore.Authorization;
+using API.RSA;
 using Microsoft.AspNetCore.Mvc;
+using Org.BouncyCastle.Crypto;
 
 namespace API.Controllers
 {
@@ -17,13 +14,16 @@ namespace API.Controllers
     {
         private readonly ISkills _skillRepo;
         public IHttpContextAccessor _accessor;
-        public SkillsController(ISkills skillRepo,IHttpContextAccessor accessor)
+        private readonly IRsaHelper _rsaHelper;
+        public SkillsController(ISkills skillRepo,
+        IHttpContextAccessor accessor,IRsaHelper rsaHelper)
         {
             _accessor = accessor;
+            _rsaHelper = rsaHelper;
             _skillRepo = skillRepo;
         }
 
-        [HttpGet("get-skills")]
+        [HttpGet("get-skills"),FormatFilter]
         public async Task<ActionResult> GetAllSkills()
         {
             try
@@ -37,7 +37,20 @@ namespace API.Controllers
             }
 
         }
+        [HttpGet("get-skills.{format}"),FormatFilter]
+        public async Task<ActionResult> GetAllSkillsUsingFormatFilter()
+        {
+            try
+            {
+                var skills = await _skillRepo.GetAllSkillsAsync();
+                return Ok(skills);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
 
+        }
 
         [HttpPost("add-skills")]
         public async Task<ActionResult> AddSkills([FromBody] SkillDto skill)
@@ -45,8 +58,16 @@ namespace API.Controllers
             string user_Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             try
             {
-                var addedskill = await _skillRepo.AddSkillsAsync(user_Id,skill);
-                return Ok(addedskill);
+                var DecryptedName  = _rsaHelper.Decrypt(skill.Name);
+                var DecryptedFamily  = _rsaHelper.Decrypt(skill.Family);
+                var newSkill = new SkillDto()
+                {
+                    Name = DecryptedName,
+                    Family=DecryptedFamily
+                };
+                var addedskill = await _skillRepo.AddSkillsAsync(user_Id,newSkill);
+                
+                return Ok(newSkill);
             }
             catch (Exception e)
             {

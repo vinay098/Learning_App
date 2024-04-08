@@ -5,7 +5,7 @@
         <div class="form-group mt-3 col-md-3">
             <label class="mb-2">Batch Name</label>
             <select class="form-select" formControlName="batchName">
-                <option>Open this select menu</option>
+                <option selected>Open this select menu</option>
                 <option *ngFor="let val of batch" value="{{val.id}}">{{val.name}}</option>
             </select>
         </div>
@@ -22,8 +22,19 @@
         </div>
         
         <div class="row  d-flex">
+            @if (isEdit) {
+                <div class="form-group mt-3 col-md-3 align-items-end">
+                    <button type="submit" class="btn btn-primary mt-3">Update</button>
+                </div>
+            }
+            @else {
+                <div class="form-group mt-3 col-md-3 align-items-end">
+                    <button type="submit" class="btn btn-primary mt-3">Map Values</button>
+                </div>
+            }
+            
             <div class="form-group mt-3 col-md-3 align-items-end">
-                <button type="submit" class="btn btn-primary mt-3">Map Value</button>
+                <button type="button" (click)="resetPage()" class="btn btn-primary mt-3">Reset Page</button>
             </div>
         </div>
     </div>
@@ -54,6 +65,7 @@
                 <td class="text-center">{{val.moduleName }}</td>
                 <td class="text-center">
                     <button type="button" (click)="deleteVal(val.batchId)" class="btn btn-danger">Delete Mapped</button>
+                    <button type="button" (click)="updateVal(val.batchId)" class="btn btn-primary mt-2">Update Mapped</button>
                 </td>
             </tr>
 

@@ -14,10 +14,10 @@ namespace API.Interface
         Task<BatchDto> AddBatchAsync(string user_id,BatchDto batch);
         Task DeleteBatchAsync(Batch batch);
         Task UpdateBatchAsync(int id,BatchDto batch);
-        // Task<List<BatchDto>> GetAll();
         Task<Batch> GetBatchByIdAsync(int id);
-        Task AssignBatch(AssignBatch obj);
-
         Task<List<AssignBatchDisplay>> GetAssignedBatch();
+        Task<List<FacultyData>> FacultyDataByID(string id);
+        Task<List<EmployeeData>> GetEmployeeData();
+
     }
 }
