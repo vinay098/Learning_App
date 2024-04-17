@@ -5,7 +5,7 @@ import { AppComponent } from './app.component';
 import { AuthModule } from './auth/auth.module';
 import { HomePageComponent } from './home-page/home-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, provideHttpClient, withInterceptors } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withInterceptors, withInterceptorsFromDi } from '@angular/common/http';
 import { IndexComponent } from './index/index.component';
 import { NavbarComponent } from './utilityComponents/navbar/navbar.component';
 import { FooterComponent } from './utilityComponents/footer/footer.component';
@@ -32,9 +32,10 @@ import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
 import { AssignBatchComponent } from './assign-batch/assign-batch.component';
 import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
-
-
-
+import { encryptDecryptAuthInterceptorInterceptor } from './Interceptors/encrypt-decrypt-auth-interceptor.interceptor';
+import { NotFoundComponent } from './utilityComponents/not-found/not-found.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
+import { SearchBarComponent } from './utilityComponents/search-bar/search-bar.component';
 
 @NgModule({
   declarations: [
@@ -59,6 +60,9 @@ import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
     FacultyDataComponent,
     AssignBatchComponent,
     BatchToBuyComponent,
+    NotFoundComponent,
+    ChangePasswordComponent,
+    SearchBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -74,6 +78,7 @@ import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
     NgxMaskPipe,
     NgxPaginationModule,
     NgMultiSelectDropDownModule.forRoot(),
+    
   ],
   providers: [
     provideClientHydration(),
@@ -83,3 +88,4 @@ import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+// encryptDecryptAuthInterceptorInterceptor

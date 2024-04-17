@@ -1,8 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Security.Claims;
-using System.Threading.Tasks;
+using System.Text;
 using API.DTOs;
 using API.Models;
 using API.Services;
@@ -43,10 +41,19 @@ namespace API.Controllers
         [HttpPost("login")]
         public async Task<ActionResult<UserDto>> Login(LoginDto obj)
         {
-            var user = await _userManager.FindByNameAsync(obj.UserName);
+            var byteName = Convert.FromBase64String(obj.UserName);
+            var bytePassword = Convert.FromBase64String(obj.Password);
+            var decodedName = Encoding.UTF8.GetString(byteName);
+            var decodedPassword = Encoding.UTF8.GetString(bytePassword);
+            var newLogin = new LoginDto()
+            {
+                UserName = decodedName,
+                Password = decodedPassword,
+            };
+            var user = await _userManager.FindByNameAsync(newLogin.UserName);
             if (user == null) return Unauthorized("Invalid UserName Or Password");
             if(!user.LockoutEnabled) return Unauthorized("You are Not Approved To Login");
-            var password = await _signInManager.CheckPasswordSignInAsync(user, obj.Password, false);
+            var password = await _signInManager.CheckPasswordSignInAsync(user, newLogin.Password, false);
             if (!password.Succeeded) return Unauthorized("Invalid UserName Or Password");
             return await CreateAppUserDto(user);
         }
@@ -135,6 +142,32 @@ namespace API.Controllers
         private async Task<bool> CheckContactNumber(string mobile)
         {
             return await _userManager.Users.AnyAsync(x => x.PhoneNumber == mobile);
+        }
+
+        [HttpPut("change-password")]
+        public async Task<ActionResult> ChangePassword(ChangePassword obj)
+        {
+            string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            try
+            {
+                var user = await _userManager.FindByIdAsync(user_Id);
+                if(user == null)
+                {
+                    return NotFound("User Not Found");
+                }
+                if(await _userManager.CheckPasswordAsync(user,obj.OldPassword))
+                {
+                    if(obj.NewPassword == obj.ConfirmPassword)
+                    {
+                        await _userManager.ChangePasswordAsync(user,obj.OldPassword,obj.ConfirmPassword);
+                    }
+                }
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
         }
     }
 }

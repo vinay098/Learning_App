@@ -5,7 +5,8 @@
 
             <nav id="sidebarMenu" class="d-block g-0 bg-primary sidebar collapse section">
                 <div class="position-sticky pt-3 sidebar-sticky">
-                    <ul class="nav flex-column  ">
+                    <ul class="nav flex-column ">
+
                         <ng-container *ngIf="role === 'admin'">
 
                             <!-- Profile -->
@@ -142,8 +143,8 @@
                             </li>
 
                         </ng-container>
+                        
                         <ng-container *ngIf="role === 'faculty'">
-
                             <!-- Profile -->
                             <li class="nav-item">
                                 <a routerLink="/home/" style="color: white;" class="nav-link fs-3" href="#">
@@ -171,7 +172,6 @@
                         </ng-container>
 
                         <ng-container *ngIf="role === 'employee'">
-
                             <!-- Profile -->
                             <li class="nav-item">
                                 <a routerLink="/home/" style="color: white;" class="nav-link fs-3" href="#">
@@ -214,7 +214,7 @@
                 </div>
             </nav>
         </section>
-
+        
 
         <main class="col-md-9 ms-sm-auto col-lg-10 mt-2">
             <section class="vh-75 gradient-custom ">

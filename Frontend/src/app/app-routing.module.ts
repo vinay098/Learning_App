@@ -19,6 +19,8 @@ import { AddAdminComponent } from './add-admin/add-admin.component';
 import { FacultyDataComponent } from './faculty-data/faculty-data.component';
 import { AssignBatchComponent } from './assign-batch/assign-batch.component';
 import { BatchToBuyComponent } from './batch-to-buy/batch-to-buy.component';
+import { NotFoundComponent } from './utilityComponents/not-found/not-found.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -45,11 +47,12 @@ const routes: Routes = [
       { path: 'course/:id', component: CourseComponent },
       { path: 'assign-batch', component: AssignBatchComponent },
       { path: 'batch-to-buy', component: BatchToBuyComponent },
-      // { path: 'enrolled-batch', component: EnrolledBatchComponent },
+      {path:'change-password',component:ChangePasswordComponent}
     ]
   },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
+  { path: '**', component: NotFoundComponent }
 
 ];
 

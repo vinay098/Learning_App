@@ -1,6 +1,13 @@
 <h2 class="text-center mt-2 mb-2">Enroll In Batches</h2>
+<div class="input-group">
+    <input type="search" class="form-control rounded" placeholder="Enter Text To Search" aria-label="Search"
+        aria-describedby="search-addon" [(ngModel)]="name.value" #name/>
+    <button type="button" (click)="onSearch(name.value)" class="btn btn-primary" data-mdb-ripple-init>search</button>
+</div>
+<!-- <app-search-bar (searchChange)="onSearchTextEntered($event)"></app-search-bar> -->
+
 <div class="table-wrapper-scroll-y my-custom-scrollbar mt-3">
-    <table class="table table-bordered table-striped mb-0">
+    <table class="table table-bordered table-striped mt-2">
         <thead>
             <tr class="table-primary">
                 <th scope="col" class="text-center">Id&nbsp;<i class="fa-solid fa-sort"></i>
@@ -16,20 +23,35 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let val of EnrollBatch ">
-                <td class="text-center">{{val.batchId}}</td>
-                <td class="text-center">{{val.batchName}}</td>
-                <td class="text-center">{{val.start | date}}</td>
-                <td class="text-center">{{val.end | date}}</td>
-                <td class="text-center">{{val.capacity}}</td>
-                <td class="text-center">{{val.technology}}</td>
-                <td class="text-center">{{val.moduleName}}</td>
-                <td class="text-center">{{val.moduleLevel}}</td>
-                <td class="text-center">
-                    <button type="button" (click)="buyBatch(val.batchId)" class="btn btn-primary">Buy</button>
-                </td>
-            </tr>
+            <ng-container *ngFor="let val of EnrollBatch ">
+                <tr>
+                    <td class="text-center">{{val.batchId}}</td>
+                    <td class="text-center">{{val.batchName}}</td>
+                    <td class="text-center">{{val.start | date}}</td>
+                    <td class="text-center">{{val.end | date}}</td>
+                    <td class="text-center">{{val.capacity}}</td>
+                    <td class="text-center">{{val.technology}}</td>
+                    <td class="text-center">{{val.moduleName}}</td>
+                    <td class="text-center">{{val.moduleLevel}}</td>
+                    <td class="text-center">
+                        <button type="button" (click)="buyBatch(val.batchId)" class="btn btn-primary">Buy</button>
+                    </td>
+                </tr>
+            </ng-container>
+
 
         </tbody>
     </table>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item"><a class="page-link" (click)="getPrevPage()">Previous</a></li>
+
+            <li *ngFor="let item of list;let index = index" class="page-item">
+                <a class="page-link" (click)="getPage(index + 1)">{{index + 1}}</a>
+            </li>
+
+
+            <li class="page-item"><a class="page-link" (click)="getNextPage()">Next</a></li>
+        </ul>
+    </nav>
 </div>

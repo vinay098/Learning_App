@@ -79,9 +79,17 @@
               "target": "Package",
               "version": "[7.0.5, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "Portable.BouncyCastle": {
               "target": "Package",
               "version": "[1.9.0, )"
+            },
+            "Sieve": {
+              "target": "Package",
+              "version": "[2.5.5, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -90,6 +98,10 @@
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[7.3.1, )"
+            },
+            "System.Linq.Dynamic.Core": {
+              "target": "Package",
+              "version": "[1.3.10, )"
             }
           },
           "imports": [

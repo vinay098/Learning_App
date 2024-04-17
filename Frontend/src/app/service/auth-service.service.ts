@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { isPlatformBrowser } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { ChangePassword } from '../interface/change-password';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { ToastrService } from 'ngx-toastr';
 export class AuthServiceService {
 
   User!: SetUser;
-  private AuthUrl = "http://localhost:5100/api/Account/";
+  private AuthUrl = "https://localhost:5100/api/Account/";
   private userSource = new BehaviorSubject<SetUser>(null);
   user$ = this.userSource.asObservable();
   storage: Storage;
@@ -56,7 +57,16 @@ export class AuthServiceService {
   }
 
   login(login: Login) {
-    return this.http.post<SetUser>(this.AuthUrl + "login", login).pipe(
+
+    const encryptedName = window.btoa(login.userName);
+    const encryptedPassword = window.btoa(login.password);
+  
+    const obj:Login = {
+      userName:encryptedName,
+      password:encryptedPassword
+    }
+    
+    return this.http.post<SetUser>(this.AuthUrl + "login", obj).pipe(
       map((user: SetUser) => {
         if (user) {
           this.setUser(user);
@@ -95,7 +105,6 @@ export class AuthServiceService {
   private setUser(user: SetUser) {
 
     localStorage.setItem("appuser", JSON.stringify(user));
-
     this.userSource.next(user);
     // console.log(user);
   }
@@ -107,7 +116,6 @@ export class AuthServiceService {
     }
     const loggedUser = user;
     // console.log(loggedUser);
-
     if (loggedUser.jwt) {
       this.userSource.next(loggedUser);
     }
@@ -117,9 +125,6 @@ export class AuthServiceService {
     const jwtHelper = new JwtHelperService();
     const token = this.getJwt();
     console.log(jwtHelper.decodeToken(token));
-   
-    
-    
     return jwtHelper.decodeToken(token);
   }
 
@@ -131,16 +136,17 @@ export class AuthServiceService {
         console.log(user);
       })
     );
-    
   }
 
-  
   getRoleFromToken(){
     if(this.uesrPayload){
       return this.uesrPayload.role;
     }
-
   }
 
+  ChangePassword(change:ChangePassword)
+  {
+    return this.http.put(this.AuthUrl+"change-password",change);
+  }
 
 }

@@ -1,13 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
+using Sieve.Attributes;
 
 namespace API.DTOs.Batch_DTO
 {
     public class BatchDto
     {
         public int Id {get; set; }
+        
+        [Sieve(CanFilter =true,CanSort =true)]
         public string Name {get; set; }
         public string StartDate {get; set; }
         public string EndDate {get; set; }

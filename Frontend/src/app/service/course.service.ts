@@ -8,7 +8,7 @@ import { CourseCreateDto } from '../interface/course-create-dto';
 })
 export class CourseService {
 
-  private courseUrl = "http://localhost:5100/api/Course/";
+  private courseUrl = "https://localhost:5100/api/Course/";
   constructor(private http:HttpClient) { }
 
   addCourse(course:any)

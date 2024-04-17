@@ -51,8 +51,7 @@ export class BatchModuleMapComponent implements OnInit {
           });
           // this.selectedItems=res;
           this.selectedItems = res.map((item) => ({
-            id: item, // Adjust property name based on your data structure
-            // text: item.moduleName // Adjust property name based on your data structure
+            id: item, 
           }));
         }
       })

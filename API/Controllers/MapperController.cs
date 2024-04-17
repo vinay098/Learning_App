@@ -239,13 +239,33 @@ namespace API.Controllers
             string user_Id = _accessor.HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier);
             try
             {
+                // var checkIfUserAlreadyEnrolled = await _context.BatchFaculties
+                // .Where(x=>x.UserId == user_Id)
+                // .Select(x=>x.BatchId).ToListAsync();
+                
+                // foreach(var check in checkIfUserAlreadyEnrolled)
+                // {
+                //     if(check == obj.BatchId)
+                //     {
+                //         return BadRequest("You are already Enrolled in this batch");
+                //     }
+                // }
+
                 var ob = new BatchFaculty();
                 ob.BatchId = obj.BatchId;
                 ob.UserId = user_Id;
+                
                 _context.Add(ob);
                 await _context.SaveChangesAsync();
+                
                 var batch =  await _context.Batches.FirstAsync(x=>x.Id==obj.BatchId);
-                batch.Capacity -=1;
+                if(batch.Capacity>0)
+                {
+                     batch.Capacity -=1;
+                }
+                else{
+                    return BadRequest("Batch is Full");
+                }
                 await _context.SaveChangesAsync(); 
                 
                 return Ok();

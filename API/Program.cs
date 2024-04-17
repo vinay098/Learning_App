@@ -1,9 +1,9 @@
 using System.Text;
 using API.Context;
 using API.Interface;
+using API.Middlewares;
 using API.Models;
 using API.Repository;
-using API.RSA;
 using API.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.IdentityModel.Tokens;
+using Sieve.Services;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -33,9 +34,7 @@ builder.Services.AddScoped<IModule,ModuleRepository>();
 builder.Services.AddScoped<IBatch,BatchRepository>();
 builder.Services.AddScoped<ICourse,CourseService>();
 builder.Services.AddSingleton<IHttpContextAccessor,HttpContextAccessor>();
-builder.Services.AddScoped<IRsaHelper,RsaHelper>();
-
-
+builder.Services.AddSingleton<SieveProcessor>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 //identity core service
@@ -92,6 +91,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// app.UseMiddleware<EncryptionMiddleware>();
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseCors(option=>option
@@ -115,6 +116,5 @@ catch(Exception e)
     var logger = scope.ServiceProvider.GetService<ILogger<Program>>();
     logger.LogError(e.Message,"Failed to initalize and seed database");
 }
-
 
 app.Run();

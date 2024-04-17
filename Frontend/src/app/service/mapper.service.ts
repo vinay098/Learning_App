@@ -11,7 +11,7 @@ import { AssignBatch } from '../interface/assign-batch';
 })
 export class MapperService {
 
-  private mapperUrl = "http://localhost:5100/api/Mapper/";
+  private mapperUrl = "https://localhost:5100/api/Mapper/";
   constructor(private http:HttpClient) { }
 
 

@@ -81,3 +81,6 @@ C:\Users\E.Vinay\Desktop\POC\API\bin\Debug\net7.0\AutoMapper.dll
 C:\Users\E.Vinay\Desktop\POC\API\bin\Debug\net7.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
 C:\Users\E.Vinay\Desktop\POC\api\obj\Debug\net7.0\API.sourcelink.json
 C:\Users\E.Vinay\Desktop\POC\Api\bin\Debug\net7.0\API.staticwebassets.runtime.json
+C:\Users\E.Vinay\Desktop\POC\API\bin\Debug\net7.0\Newtonsoft.Json.dll
+C:\Users\E.Vinay\Desktop\POC\api\bin\Debug\net7.0\Sieve.dll
+C:\Users\E.Vinay\Desktop\POC\api\bin\Debug\net7.0\System.Linq.Dynamic.Core.dll

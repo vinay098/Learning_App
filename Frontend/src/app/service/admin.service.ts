@@ -9,7 +9,7 @@ import { Admin } from '../interface/admin';
 })
 export class AdminService {
 
-  private adminUrl = "http://localhost:5100/api/Admin/";
+  private adminUrl = "https://localhost:5100/api/Admin/";
   constructor(private http:HttpClient) { }
 
   getAllMembers()
@@ -19,7 +19,7 @@ export class AdminService {
 
   approveUser(id:string)
   {
-    return this.http.put("http://localhost:5100/api/Admin/approve-user/"+id,{});
+    return this.http.put("https://localhost:5100/api/Admin/approve-user/"+id,{});
   }
 
   disApproveUser(id:string)

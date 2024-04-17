@@ -3,6 +3,9 @@ using System.Security.Claims;
 using API.DTOs.Batch_DTO;
 using API.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Sieve.Models;
+using Sieve.Services;
 
 namespace API.Controllers
 {
@@ -12,11 +15,13 @@ namespace API.Controllers
     {
         private readonly IBatch _batchrepo;
         private readonly IHttpContextAccessor _accessor;
+        private readonly SieveProcessor _sieveProcessor;
         public BatchController(IBatch batchrepo,
-        IHttpContextAccessor accessor)
+        IHttpContextAccessor accessor,SieveProcessor sieveProcessor)
         {
             _accessor = accessor;
             _batchrepo = batchrepo;
+            _sieveProcessor = sieveProcessor;
         }
 
         [HttpPost("add-batch")]
@@ -135,6 +140,63 @@ namespace API.Controllers
             {
                 var response = await _batchrepo.GetEmployeeData();
                 return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("search-batch")]
+        public async Task<ActionResult<List<BatchDto>>> SearchBatch([FromQuery]SieveModel model)
+        {
+            try
+            {
+                var response = await _batchrepo.SearchBatch();
+                response = _sieveProcessor.Apply(model,response);
+                return response.ToList();
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("get-batch-by-params")]
+        public async Task<ActionResult> GetBatches(string term,string sort,int page=1,int limit=4)
+        {
+            try
+            {
+                var response = await _batchrepo.GetBatchDtoByQueryParams(term,sort,page,limit);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("get-emp-data-by-params")]
+        public async Task<ActionResult> GetEmpData(string term,string sort,int page=1,int limit=4)
+        {
+            try
+            {
+                var response = await _batchrepo.GetEmployeeDataByParams(term,sort,page,limit);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return Problem(e.Message);
+            }
+        }
+
+        [HttpGet("batch-count")]
+        public async Task<ActionResult> GetBatchCount()
+        {
+            try
+            {
+                var ans = await _batchrepo.GetBatchCount();
+                return Ok(ans);
             }
             catch (Exception e)
             {

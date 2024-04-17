@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class Auth2Service {
 
-  private AuthUrl = "http://localhost:5100/api/Account/";
+  private AuthUrl = "https://localhost:5100/api/Account/";
   constructor(private http:HttpClient) { }
 
   signUp(userobj:any){

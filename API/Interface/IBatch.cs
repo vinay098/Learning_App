@@ -18,6 +18,9 @@ namespace API.Interface
         Task<List<AssignBatchDisplay>> GetAssignedBatch();
         Task<List<FacultyData>> FacultyDataByID(string id);
         Task<List<EmployeeData>> GetEmployeeData();
-
+        Task<IQueryable<BatchDto>> SearchBatch();
+        Task<BatchResult>GetBatchDtoByQueryParams(string term,string sort,int page,int limit);
+        Task<EmployeeResult> GetEmployeeDataByParams(string term, string sort, int page, int limit);
+        Task<int> GetBatchCount();
     }
 }

@@ -2,7 +2,6 @@
 using System.Security.Claims;
 using API.DTOs.Skills_DTO;
 using API.Interface;
-using API.RSA;
 using Microsoft.AspNetCore.Mvc;
 using Org.BouncyCastle.Crypto;
 
@@ -14,12 +13,10 @@ namespace API.Controllers
     {
         private readonly ISkills _skillRepo;
         public IHttpContextAccessor _accessor;
-        private readonly IRsaHelper _rsaHelper;
         public SkillsController(ISkills skillRepo,
-        IHttpContextAccessor accessor,IRsaHelper rsaHelper)
+        IHttpContextAccessor accessor)
         {
             _accessor = accessor;
-            _rsaHelper = rsaHelper;
             _skillRepo = skillRepo;
         }
 
@@ -58,16 +55,9 @@ namespace API.Controllers
             string user_Id = User.FindFirstValue(ClaimTypes.NameIdentifier);
             try
             {
-                var DecryptedName  = _rsaHelper.Decrypt(skill.Name);
-                var DecryptedFamily  = _rsaHelper.Decrypt(skill.Family);
-                var newSkill = new SkillDto()
-                {
-                    Name = DecryptedName,
-                    Family=DecryptedFamily
-                };
-                var addedskill = await _skillRepo.AddSkillsAsync(user_Id,newSkill);
+                var addedskill = await _skillRepo.AddSkillsAsync(user_Id,skill);
                 
-                return Ok(newSkill);
+                return Ok(addedskill);
             }
             catch (Exception e)
             {

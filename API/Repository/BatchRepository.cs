@@ -1,12 +1,14 @@
 
+using System.Reflection;
+using System.Text;
 using API.Context;
 using API.DTOs.Batch_DTO;
 using API.Interface;
 using API.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace API.Repository
 {
@@ -117,12 +119,9 @@ namespace API.Repository
                     var name = await _userManager.GetUserNameAsync(user);
                     dto.Faculty.Add(name);
                 }
-
                 res.Add(dto);
             }
-
             return res;
-
         }
 
         public async Task<List<FacultyData>> FacultyDataByID(string id)
@@ -184,5 +183,164 @@ namespace API.Repository
 
              return res;
         }
+
+        private List<EmployeeData> GetAllEmployeeDatas(List<Batch> obj)
+        {
+             var batches =  obj;
+             var res = new List<EmployeeData>();
+             foreach(var val in batches)
+             {
+                var dto = new EmployeeData();
+                dto.BatchId = val.Id;
+                dto.BatchName = val.BatchName;
+                dto.Start = val.StartDate.ToString();
+                dto.End = val.EndDate.ToString();
+                dto.Capacity = val.Capacity;
+                dto.Technology = val.Technology;
+                var module =  _context.BatchModules
+                .Where(x=>x.BatchId==val.Id)
+                .Select(x=>x.ModuleId)
+                .ToList();
+                
+                foreach(var id in module)
+                {
+                    var ans =  _context.Modules.FirstOrDefault(x=>x.Id==id);
+                    dto.ModuleName.Add(ans.Module_Name);
+                    dto.ModuleLevel.Add(ans.Proefficiency_level);
+                }
+                res.Add(dto);
+             }
+
+             return res;
+        }
+
+        public async Task<IQueryable<BatchDto>> SearchBatch()
+        {
+              var res = await GetAllAsync();
+              return res.AsQueryable();
+        }
+
+        public async Task<BatchResult> GetBatchDtoByQueryParams(string term, string sort, int page, int limit)
+        {
+        
+            IQueryable<Batch> batches;
+            if(string.IsNullOrWhiteSpace(term))
+            {
+                batches = _context.Batches;
+            }
+            else{
+                batches = _context.Batches.Where(
+                    b=>b.BatchName.ToLower().Contains(term)
+                    || b.Technology.ToLower().Contains(term)
+                    );
+            }
+            //sorting
+            if(!string.IsNullOrWhiteSpace(sort))
+            {
+                var sortFields = sort.Split(',');
+                StringBuilder orderQuery = new StringBuilder();
+                PropertyInfo[] propertyInfo = typeof(Batch).GetProperties();
+                foreach(var field in sortFields)
+                {
+                    string sortOrder = " ascending";
+                    var sortField = field.Trim();
+                    if(sortField.StartsWith("-"))
+                    {
+                        sortField = sortField.TrimStart('-');
+                        sortOrder=" descending";
+                    }
+                    var property = propertyInfo.FirstOrDefault(a=>a.Name
+                    .Equals(sortField,StringComparison.OrdinalIgnoreCase));
+
+                    if(property == null)
+                        continue;
+                    orderQuery.Append($"{property.Name.ToString()}{sortOrder},");
+                } 
+                string order = orderQuery.ToString().TrimEnd(',',' ');
+                if(!string.IsNullOrWhiteSpace(order))
+                    batches = batches.OrderBy(order);
+                else
+                    batches = batches.OrderBy(a=>a.Id);
+            }
+
+            //apply pagination
+            var totalCount = await batches.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalCount/(double)limit);
+            var pagedData = await batches.Skip((page-1)*limit).Take(limit).ToListAsync();
+            var ans = _mapper.Map<List<Batch>, List<BatchDto>>(pagedData);
+
+            var batchResultData = new BatchResult
+            {
+                batches = ans,
+                TotalCount = totalCount,
+                TotalPage =  totalPages,
+            };
+            return batchResultData;
+        }
+
+        public async Task<EmployeeResult> GetEmployeeDataByParams(string term, string sort, int page, int limit)
+        {
+            IQueryable<Batch> batches;
+            if(string.IsNullOrWhiteSpace(term))
+            {
+                batches = _context.Batches;
+            }
+            else{
+                batches = _context.Batches.Where(
+                    b=>b.BatchName.ToLower().Contains(term)
+                    || b.Technology.ToLower().Contains(term)
+                    );
+            }
+            
+            //sorting
+            if(!string.IsNullOrWhiteSpace(sort))
+            {
+                var sortFields = sort.Split(',');
+                StringBuilder orderQuery = new StringBuilder();
+                PropertyInfo[] propertyInfo = typeof(Batch).GetProperties();
+                foreach(var field in sortFields)
+                {
+                    string sortOrder = " ascending";
+                    var sortField = field.Trim();
+                    if(sortField.StartsWith("-"))
+                    {
+                        sortField = sortField.TrimStart('-');
+                        sortOrder=" descending";
+                    }
+                    var property = propertyInfo.FirstOrDefault(a=>a.Name
+                    .Equals(sortField,StringComparison.OrdinalIgnoreCase));
+
+                    if(property == null)
+                        continue;
+                    orderQuery.Append($"{property.Name.ToString()}{sortOrder},");
+                } 
+                string order = orderQuery.ToString().TrimEnd(',',' ');
+                if(!string.IsNullOrWhiteSpace(order))
+                    batches = batches.OrderBy(order);
+                else
+                    batches = batches.OrderBy(a=>a.Id);
+            }
+
+            //apply pagination
+            var totalCount = await batches.CountAsync();
+            var totalPages = (int)Math.Ceiling(totalCount/(double)limit);
+            var pagedData = await batches.Skip((page-1)*limit).Take(limit).ToListAsync();
+             var res = GetAllEmployeeDatas(pagedData);
+
+            var EmpResultData = new EmployeeResult
+            {
+                batches = res,
+                TotalCount = totalCount,
+                TotalPage =  totalPages,
+            };
+            return EmpResultData;
+        }
+
+
+        public async Task<int> GetBatchCount()
+        {
+            return await _context.Batches.CountAsync();
+        }
+
     }
 }

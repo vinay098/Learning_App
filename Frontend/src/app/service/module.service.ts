@@ -7,7 +7,7 @@ import {Module} from '../interface/module';
 })
 export class ModuleService {
 
-  private moduleUrl = "http://localhost:5100/api/Module/";
+  private moduleUrl = "https://localhost:5100/api/Module/";
   constructor(private http:HttpClient) { }
 
   addModule(module:Module)
