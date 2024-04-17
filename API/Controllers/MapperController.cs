@@ -18,11 +18,13 @@ namespace API.Controllers
         private readonly AppDbContext _context;
         private readonly IHttpContextAccessor _accessor;
         private readonly IModule _modulerepo;
+        public readonly IMapper _mapper;
 
         public MapperController(AppDbContext context,
         IHttpContextAccessor accessor,
-        IModule modulerepo)
+        IModule modulerepo, IMapper mapper)
         {
+            _mapper = mapper;
             _context = context;
             _accessor = accessor;
             _modulerepo = modulerepo;
@@ -84,30 +86,14 @@ namespace API.Controllers
         [HttpGet("batch-module-mapped-values")]
         public async Task<ActionResult<List<BatchModuleDisplayDto>>> BatchModule()
         {
+
             try
             {
-                var batches = await _context.Batches.ToListAsync();
-                var addedData = new List<BatchModuleDisplayDto>();
-                foreach (var val in batches)
-                {
-                    var dto = new BatchModuleDisplayDto();
-                    dto.BatchId = val.Id;
-                    dto.BatchName = val.BatchName;
-                    dto.Batch_Start = Convert.ToString(val.StartDate);
-                    dto.Batch_End = Convert.ToString(val.EndDate);
-                    dto.Capacity = val.Capacity;
-                    dto.Technology = val.Technology;
-                    var names = await _context.BatchModules
-                     .Where(b => b.BatchId == val.Id)
-                     .Select(b => b.Module.Module_Name).ToListAsync();
-                    foreach (var name in names)
-                    {
-                        dto.ModuleName.Add(name);
-                    }
-                    addedData.Add(dto);
-                }
-
-                return Ok(addedData);
+                var batches = await _context.Batches
+                .Include(b => b.BatchModules)
+                .ThenInclude(bm => bm.Module).ToListAsync();
+                var ans = _mapper.Map<List<Batch>, List<BatchModuleDisplayDto>>(batches);
+                return Ok(ans);
             }
             catch (Exception e)
             {
@@ -121,26 +107,11 @@ namespace API.Controllers
         {
             try
             {
-                var modules = await _context.Modules.ToListAsync();
-                var addedData = new List<SkillModuleValuesDto>();
-                foreach (var val in modules)
-                {
-                    var dto = new SkillModuleValuesDto();
-                    dto.ModuleId = val.Id;
-                    dto.ModuleName = val.Module_Name;
-                    dto.Level = val.Proefficiency_level;
-                    dto.Learning_Type = val.Learning_Type;
-                    dto.Certification_Type = val.Certification_Type;
-                    var names = await _context.SkillModules
-                    .Where(m => m.ModuleId == val.Id)
-                    .Select(s => s.Skills.Skill_Name).ToListAsync();
-                    foreach (var name in names)
-                    {
-                        dto.SkillName.Add(name);
-                    }
-                    addedData.Add(dto);
-                }
-                return Ok(addedData);
+                var modules = await _context.Modules.Include(m=>m.SkillModules)
+                .ThenInclude(sm=>sm.Skills).ToListAsync();
+                  var ans = _mapper.Map<List<LearnModule>, List<SkillModuleValuesDto>>(modules);
+                return Ok(ans);
+                
             }
             catch (Exception e)
             {
@@ -242,7 +213,7 @@ namespace API.Controllers
                 // var checkIfUserAlreadyEnrolled = await _context.BatchFaculties
                 // .Where(x=>x.UserId == user_Id)
                 // .Select(x=>x.BatchId).ToListAsync();
-                
+
                 // foreach(var check in checkIfUserAlreadyEnrolled)
                 // {
                 //     if(check == obj.BatchId)
@@ -254,20 +225,21 @@ namespace API.Controllers
                 var ob = new BatchFaculty();
                 ob.BatchId = obj.BatchId;
                 ob.UserId = user_Id;
-                
+
                 _context.Add(ob);
                 await _context.SaveChangesAsync();
-                
-                var batch =  await _context.Batches.FirstAsync(x=>x.Id==obj.BatchId);
-                if(batch.Capacity>0)
+
+                var batch = await _context.Batches.FirstAsync(x => x.Id == obj.BatchId);
+                if (batch.Capacity > 0)
                 {
-                     batch.Capacity -=1;
+                    batch.Capacity -= 1;
                 }
-                else{
+                else
+                {
                     return BadRequest("Batch is Full");
                 }
-                await _context.SaveChangesAsync(); 
-                
+                await _context.SaveChangesAsync();
+
                 return Ok();
             }
             catch (Exception e)
@@ -335,7 +307,7 @@ namespace API.Controllers
             }
         }
 
-         [HttpGet("get-skill-module/{id}")]
+        [HttpGet("get-skill-module/{id}")]
         public async Task<ActionResult> GetSkillModuleById(int id)
         {
             try
@@ -394,7 +366,6 @@ namespace API.Controllers
                 return Problem(e.Message);
             }
         }
-
 
     }
 }

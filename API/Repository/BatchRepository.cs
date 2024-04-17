@@ -61,6 +61,7 @@ namespace API.Repository
             var ans = _mapper.Map<List<Batch>, List<BatchDto>>(res);
             return ans;
         }
+        
         public async Task<BatchDto> GetBatchDtoByIdAsync(int id)
         {
             var res = await _context.Batches.ToListAsync();
@@ -126,60 +127,22 @@ namespace API.Repository
 
         public async Task<List<FacultyData>> FacultyDataByID(string id)
         {
-            var Batch_Id = await _context.BatchFaculties
-                            .Where(b => b.UserId == id)
-                            .Select(b => new
-                            {
-                                b.Batch.Id,
-                                b.Batch.BatchName,
-                                b.Batch.StartDate,
-                                b.Batch.EndDate,
-                                b.Batch.Capacity,
-                                b.Batch.Technology,
-                            }).ToListAsync();
+            var batches = await _context.BatchFaculties
+            .Include(bf=>bf.Batch)
+            .Where(bf=>bf.UserId==id).ToListAsync();
 
-            var res = new List<FacultyData>();
-            foreach (var val in Batch_Id)
-            {
-                var dto = new FacultyData();
-                dto.Batch_Id = val.Id;
-                dto.Batch_Name = val.BatchName;
-                dto.Start = val.StartDate.ToString();
-                dto.End = val.EndDate.ToString();
-                dto.Capacity = val.Capacity;
-                dto.Technology = val.Technology;
-                res.Add(dto);
-            }
-
+            var res = _mapper.Map<List<BatchFaculty>,List<FacultyData>>(batches);
             return res;
+            
         }
 
         public async Task<List<EmployeeData>> GetEmployeeData()
         {
-             var batches = await _context.Batches.ToListAsync();
-             var res = new List<EmployeeData>();
-             foreach(var val in batches)
-             {
-                var dto = new EmployeeData();
-                dto.BatchId = val.Id;
-                dto.BatchName = val.BatchName;
-                dto.Start = val.StartDate.ToString();
-                dto.End = val.EndDate.ToString();
-                dto.Capacity = val.Capacity;
-                dto.Technology = val.Technology;
-                var module = await _context.BatchModules
-                .Where(x=>x.BatchId==val.Id)
-                .Select(x=>x.ModuleId)
-                .ToListAsync();
-                
-                foreach(var id in module)
-                {
-                    var ans = await _context.Modules.FirstOrDefaultAsync(x=>x.Id==id);
-                    dto.ModuleName.Add(ans.Module_Name);
-                    dto.ModuleLevel.Add(ans.Proefficiency_level);
-                }
-                res.Add(dto);
-             }
+             var batches = await _context.Batches
+             .Include(b=>b.BatchModules)
+             .ThenInclude(bm=>bm.Module).ToListAsync();
+
+             var res = _mapper.Map<List<Batch>,List<EmployeeData>>(batches);
 
              return res;
         }
@@ -335,7 +298,6 @@ namespace API.Repository
             };
             return EmpResultData;
         }
-
 
         public async Task<int> GetBatchCount()
         {
